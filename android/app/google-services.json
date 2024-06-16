@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1022424188763",
+    "project_id": "volunteer-linker",
+    "storage_bucket": "volunteer-linker.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1022424188763:android:d07d0f5c2cc7670c5d7c7e",
+        "android_client_info": {
+          "package_name": "com.example.volunteer_linker"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcPsCwMcsHdW7odPIRref9AXY30UlZJEI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
