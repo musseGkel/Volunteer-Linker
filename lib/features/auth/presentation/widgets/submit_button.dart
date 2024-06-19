@@ -33,7 +33,7 @@ class SubmitButton extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 40, vertical: 15)),
             child: Text(
-              isLogin ? 'Login' : 'Register', // "Login",
+              isLogin ? 'Login' : 'Register',
               style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -43,19 +43,6 @@ class SubmitButton extends StatelessWidget {
         ),
       ],
     );
-    // return Padding(
-    //   padding: const EdgeInsets.all(8.0),
-    //   child: ElevatedButton(
-    //     onPressed: () {
-    //       isLogin
-    //           ? signInWithEmailAndPassword(context)
-    //           : createUserWithEmailAndPassword(context);
-    //     },
-    //     child: Text(
-    //       isLogin ? 'Login' : 'Register',
-    //     ),
-    //   ),
-    // );
   }
 
   Future<void> signInWithEmailAndPassword(BuildContext context) async {

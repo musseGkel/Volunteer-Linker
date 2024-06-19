@@ -31,18 +31,5 @@ class EntryField extends StatelessWidget {
         ),
       ),
     );
-
-    // Padding(
-    //   padding: const EdgeInsets.all(8.0),
-    //   child: SizedBox(
-    //     width: 200,
-    //     child: TextField(
-    //       controller: controller,
-    //       decoration: InputDecoration(
-    //         labelText: title,
-    //       ),
-    //     ),
-    //   ),
-    // );
   }
 }
