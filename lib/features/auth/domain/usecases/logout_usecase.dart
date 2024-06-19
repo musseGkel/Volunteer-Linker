@@ -1,6 +1,6 @@
 import 'package:either_dart/either.dart';
 
-import '../../core/failure.dart';
+import '../../../../core/failure.dart';
 import '../repository/auth_repository.dart';
 
 class LogoutUseCase {

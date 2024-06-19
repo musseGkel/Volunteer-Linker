@@ -1,19 +1,19 @@
 import 'package:either_dart/either.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import '../../core/failure.dart';
+import '../../../../core/failure.dart';
 import '../repository/auth_repository.dart';
 
-class LoginUseCase {
-  final AuthRepository authRepository;
+class RegisterUseCase {
+  final AuthRepository _authRepository;
 
-  LoginUseCase(this.authRepository);
+  RegisterUseCase(this._authRepository);
 
-  Future<Either<Failure, User?>> login({
+  Future<Either<Failure, User?>> call({
     required String email,
     required String password,
   }) async {
-    return await authRepository.login(
+    return await _authRepository.register(
       email: email,
       password: password,
     );
