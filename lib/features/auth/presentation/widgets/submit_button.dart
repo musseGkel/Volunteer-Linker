@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../constants/app_colors.dart';
+import '../../../../core/widgets/common_button.dart';
 import '../bloc/auth_bloc.dart';
 
 class SubmitButton extends StatelessWidget {
@@ -16,32 +18,20 @@ class SubmitButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Expanded(
-          child: ElevatedButton(
-            onPressed: () {
-              isLogin
-                  ? signInWithEmailAndPassword(context)
-                  : createUserWithEmailAndPassword(context);
-            },
-            style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xff6941C6),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 40, vertical: 15)),
-            child: Text(
-              isLogin ? 'Login' : 'Register',
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ),
-      ],
+    return Padding(
+      padding: const EdgeInsets.only(top: 35, left: 60, right: 60, bottom: 60),
+      child: CommonButton(
+        backgroundColor: AppColors.primaryColor,
+        borderColor: AppColors.primaryBorderColor,
+        text: isLogin ? 'Login' : 'Register',
+        textColor: AppColors.primaryTextColor,
+        onTap: () {
+          isLogin
+              ? signInWithEmailAndPassword(context)
+              : createUserWithEmailAndPassword(context);
+        },
+        contentColor: AppColors.primaryTextColor,
+      ),
     );
   }
 
