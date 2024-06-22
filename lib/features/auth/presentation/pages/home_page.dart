@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../constants/app_colors.dart';
+import '../../../../core/widgets/common_button.dart';
 import '../bloc/auth_bloc.dart';
 
 class HomePage extends StatelessWidget {
@@ -21,16 +23,21 @@ class HomePage extends StatelessWidget {
                 Text(
                   state.user?.email ?? "User email",
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    BlocProvider.of<AuthBloc>(context).add(
-                      const LogoutEvent(),
-                    );
-                  },
-                  child: const Text(
-                    "Sign Out",
+                Padding(
+                  padding: const EdgeInsets.only(
+                      top: 35, left: 60, right: 60, bottom: 60),
+                  child: CommonButton(
+                    backgroundColor: AppColors.primaryColor,
+                    borderColor: AppColors.primaryBorderColor,
+                    text: "Logout",
+                    textColor: AppColors.primaryTextColor,
+                    onTap: () {
+                      BlocProvider.of<AuthBloc>(context)
+                          .add(const LogoutEvent());
+                    },
+                    contentColor: AppColors.primaryTextColor,
                   ),
-                ),
+                )
               ],
             ),
           ),
