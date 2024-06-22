@@ -9,11 +9,16 @@ class SubmitButton extends StatelessWidget {
   final bool isLogin;
   final TextEditingController controllerEmail;
   final TextEditingController controllerPassword;
+  final TextEditingController? controllerName;
+  final TextEditingController controllerConfirmPassword;
+
   const SubmitButton({
     super.key,
     required this.isLogin,
     required this.controllerEmail,
     required this.controllerPassword,
+    required this.controllerConfirmPassword,
+    this.controllerName,
   });
 
   @override
@@ -49,6 +54,8 @@ class SubmitButton extends StatelessWidget {
       RegisterEvent(
         email: controllerEmail.text,
         password: controllerPassword.text,
+        confirmPassword: controllerConfirmPassword.text,
+        name: controllerName!.text,
       ),
     );
   }
