@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/widgets/common_textfield.dart';
 import '../bloc/auth_bloc.dart';
 import '../widgets/entry_field.dart';
 import '../widgets/error_message.dart';
@@ -67,13 +68,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                 ),
                                 SizedBox(height: size.height * 0.06),
-                                EntryField(
-                                  title: "Email",
+                                CommonTextField(
+                                  label: "EMAIL",
                                   controller: _controllerEmail,
                                 ),
                                 SizedBox(height: size.height * 0.03),
-                                EntryField(
-                                  title: "Password",
+                                CommonTextField(
+                                  label: "Password",
                                   controller: _controllerPassword,
                                 ),
                                 if (state.errorMessage != '')
