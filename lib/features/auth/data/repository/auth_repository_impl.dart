@@ -36,11 +36,13 @@ class AuthRepositoryImpl extends AuthRepository {
   Future<Either<Failure, User?>> register({
     required String email,
     required String password,
+    required String name,
   }) async {
     try {
       User? user = await authDataSource.register(
         email: email,
         password: password,
+        name: name,
       );
       return Right(user);
     } on FirebaseAuthException catch (e) {

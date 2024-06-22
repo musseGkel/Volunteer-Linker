@@ -57,29 +57,54 @@ class LogoutEvent extends AuthEvent {
 class RegisterEvent extends AuthEvent {
   final String email;
   final String password;
+  final String confirmPassword;
+  final String name;
 
   const RegisterEvent({
     required this.email,
     required this.password,
+    required this.confirmPassword,
+    required this.name,
   });
 
   @override
   Stream<AuthState> handle() async* {
-    yield const AuthState(
-      isLoading: true,
-    );
-    final result = await AuthRepositoryImpl(
-      authDataSource: AuthDatasource(),
-    ).register(
-      email: email,
-      password: password,
-    );
-    yield result.fold(
-      (failure) => AuthState(errorMessage: failure.message),
-      (success) => AuthState(
-        user: success,
-      ),
-    );
+    if (name.isEmpty) {
+      yield const AuthState(
+        errorMessage: 'Please fill all fields',
+        isLogin: false,
+      );
+      return;
+    }
+    if (password != confirmPassword) {
+      yield const AuthState(
+        errorMessage: 'Password does not match',
+        isLogin: false,
+      );
+      return;
+    } else {
+      yield const AuthState(
+        isLoading: true,
+        isLogin: false,
+      );
+      final result = await AuthRepositoryImpl(
+        authDataSource: AuthDatasource(),
+      ).register(
+        email: email,
+        password: password,
+        name: name,
+      );
+      yield result.fold(
+        (failure) => AuthState(
+          errorMessage: failure.message,
+          isLogin: false,
+        ),
+        (success) => AuthState(
+          user: success,
+          isLogin: false,
+        ),
+      );
+    }
   }
 }
 
