@@ -11,6 +11,7 @@ class SubmitButton extends StatelessWidget {
   final TextEditingController controllerPassword;
   final TextEditingController? controllerName;
   final TextEditingController controllerConfirmPassword;
+  final AuthState state;
 
   const SubmitButton({
     super.key,
@@ -19,6 +20,7 @@ class SubmitButton extends StatelessWidget {
     required this.controllerPassword,
     required this.controllerConfirmPassword,
     this.controllerName,
+    required this.state,
   });
 
   @override
@@ -56,6 +58,7 @@ class SubmitButton extends StatelessWidget {
         password: controllerPassword.text,
         confirmPassword: controllerConfirmPassword.text,
         name: controllerName!.text,
+        state: state,
       ),
     );
   }

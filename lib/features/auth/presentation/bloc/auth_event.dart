@@ -54,13 +54,33 @@ class LogoutEvent extends AuthEvent {
   }
 }
 
+class ToggleUserType extends AuthEvent {
+  final UserType userType;
+  final AuthState state;
+
+  const ToggleUserType({
+    required this.userType,
+    required this.state,
+  });
+
+  @override
+  Stream<AuthState> handle() async* {
+    AuthState updatedState = state.copyWith(
+      userType: userType,
+    );
+    yield updatedState;
+  }
+}
+
 class RegisterEvent extends AuthEvent {
   final String email;
   final String password;
   final String confirmPassword;
   final String name;
+  final AuthState state;
 
   const RegisterEvent({
+    required this.state,
     required this.email,
     required this.password,
     required this.confirmPassword,
@@ -69,39 +89,46 @@ class RegisterEvent extends AuthEvent {
 
   @override
   Stream<AuthState> handle() async* {
+    AuthState updatedState;
     if (name.isEmpty) {
-      yield const AuthState(
+      updatedState = state.copyWith(
         errorMessage: 'Please fill all fields',
-        isLogin: false,
+        authMode: AuthMode.register,
       );
+      yield updatedState;
+
       return;
     }
     if (password != confirmPassword) {
-      yield const AuthState(
+      updatedState = state.copyWith(
         errorMessage: 'Password does not match',
-        isLogin: false,
+        authMode: AuthMode.register,
       );
+      yield updatedState;
       return;
     } else {
-      yield const AuthState(
+      updatedState = state.copyWith(
         isLoading: true,
-        isLogin: false,
+        authMode: AuthMode.register,
       );
+      yield updatedState;
+
       final result = await AuthRepositoryImpl(
         authDataSource: AuthDatasource(),
       ).register(
         email: email,
         password: password,
         name: name,
+        userType: state.userType,
       );
       yield result.fold(
         (failure) => AuthState(
           errorMessage: failure.message,
-          isLogin: false,
+          authMode: AuthMode.register,
         ),
         (success) => AuthState(
           user: success,
-          isLogin: false,
+          authMode: AuthMode.register,
         ),
       );
     }
@@ -135,7 +162,7 @@ class ToggleLoginEvent extends AuthEvent {
   @override
   Stream<AuthState> handle() async* {
     yield state.copyWith(
-      isLogin: !state.isLogin,
+      authMode: state.isOnLogin() ? AuthMode.register : AuthMode.login,
     ) as AuthState;
   }
 }

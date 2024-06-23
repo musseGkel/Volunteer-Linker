@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:volunteer_linker/core/enums.dart';
 
 import '../../data/datasources/auth_datasource.dart';
 import '../../data/repository/auth_repository_impl.dart';

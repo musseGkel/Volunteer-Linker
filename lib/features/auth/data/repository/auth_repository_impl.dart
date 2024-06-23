@@ -1,5 +1,6 @@
 import 'package:either_dart/either.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:volunteer_linker/core/enums.dart';
 
 import '../../../../core/failure.dart';
 import '../../domain/repository/auth_repository.dart';
@@ -37,12 +38,14 @@ class AuthRepositoryImpl extends AuthRepository {
     required String email,
     required String password,
     required String name,
+    required UserType userType,
   }) async {
     try {
       User? user = await authDataSource.register(
         email: email,
         password: password,
         name: name,
+        userType: userType,
       );
       return Right(user);
     } on FirebaseAuthException catch (e) {

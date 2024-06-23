@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:volunteer_linker/constants/app_colors.dart';
 
+import '../../../../core/enums.dart';
+import '../../../../core/widgets/animated_toggle.dart';
 import '../../../../core/widgets/common_textfield.dart';
 import '../bloc/auth_bloc.dart';
-import '../widgets/entry_field.dart';
 import '../widgets/error_message.dart';
 import '../widgets/loading_indicator.dart';
 import '../widgets/submit_button.dart';
@@ -40,14 +42,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: <Widget>[
                     Center(
                       child: Text(
-                        state.isLogin ? "Login" : "Register",
+                        state.isOnLogin() ? "Login" : "Register",
                         style: const TextStyle(
                           fontSize: 30,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
-                    if (!state.isLogin)
+                    if (state.isOnRegister())
                       Padding(
                         padding: const EdgeInsets.only(
                           top: 35,
@@ -81,7 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         controller: _controllerPassword,
                       ),
                     ),
-                    if (!state.isLogin)
+                    if (state.isOnRegister()) ...[
                       Padding(
                         padding: const EdgeInsets.only(
                           top: 35,
@@ -93,6 +95,38 @@ class _LoginScreenState extends State<LoginScreen> {
                           controller: _controllerConfirmPassword,
                         ),
                       ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          top: 35,
+                          left: 40,
+                          right: 40,
+                        ),
+                        child: Text(
+                          "I want to sign up as a:",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black.withOpacity(0.7),
+                          ),
+                        ),
+                      ),
+                      AnimatedToggle(
+                        values: const ['Volunteer', 'Charity'],
+                        backgroundColor: Colors.grey[200]!,
+                        buttonColor: AppColors.primaryColor,
+                        textColor: AppColors.primaryTextColor,
+                        onToggleCallback: (value) {
+                          BlocProvider.of<AuthBloc>(context).add(
+                            ToggleUserType(
+                              userType: value == 0
+                                  ? UserType.volunteer
+                                  : UserType.organization,
+                              state: state,
+                            ),
+                          );
+                        },
+                      ),
+                    ],
                     if (state.errorMessage != '')
                       Column(
                         children: [
@@ -119,11 +153,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     SizedBox(height: size.height * 0.04),
                     SubmitButton(
-                      isLogin: state.isLogin,
+                      isLogin: state.isOnLogin(),
                       controllerEmail: _controllerEmail,
                       controllerPassword: _controllerPassword,
                       controllerName: _controllerName,
                       controllerConfirmPassword: _controllerConfirmPassword,
+                      state: state,
                     ),
                     SizedBox(height: size.height * 0.04),
                     TextButton(
@@ -133,7 +168,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         );
                       },
                       child: Text(
-                        state.isLogin ? "Register Instead" : "Login Instead",
+                        state.isOnLogin()
+                            ? "Register Instead"
+                            : "Login Instead",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: Colors.black.withOpacity(0.7),

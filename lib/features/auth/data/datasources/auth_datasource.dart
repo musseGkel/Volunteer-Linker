@@ -1,5 +1,9 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+import '../../../../core/enums.dart';
 
 class AuthDatasource {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -21,6 +25,7 @@ class AuthDatasource {
     required String email,
     required String password,
     required String name,
+    required UserType userType,
   }) async {
     UserCredential userCredential =
         await _firebaseAuth.createUserWithEmailAndPassword(
@@ -30,16 +35,33 @@ class AuthDatasource {
 
     User? user = userCredential.user;
     if (user != null) {
-      await _firestore.collection('users').doc(user.uid).set({
-        'id': user.uid,
-        'name': name.trim(),
-        'email': user.email,
-        'profilePictureUrl': '',
-        'interests': [],
-        'skills': [],
-        'availability': '',
-        'volunteerActivities': [],
-      });
+      if (userType == UserType.volunteer) {
+        await _firestore.collection('users').doc(user.uid).set({
+          'id': user.uid,
+          'name': name.trim(),
+          'email': user.email,
+          'userType': enumToString(userType),
+          'profilePictureUrl': '',
+          'interests': [],
+          'skills': [],
+          'availability': '',
+          'volunteerActivities': [],
+        });
+      } else if (userType == UserType.organization) {
+        await _firestore.collection("organization").doc(user.uid).set(
+          {
+            'id': user.uid,
+            'name': name.trim(),
+            'email': user.email,
+            'userType': enumToString(userType),
+            'contactNumber': '',
+            'description': '',
+            'address': '',
+            'profilePictureUrl': '',
+            'postedOpportunites': [],
+          },
+        );
+      }
     }
     return currentUser;
   }
