@@ -12,6 +12,8 @@ class CommonButton extends StatelessWidget {
   final bool isLoading;
   final Function()? onTap;
   final bool isDisabled;
+  final BorderRadius? borderRadius;
+  final double? fontSize;
 
   const CommonButton({
     super.key,
@@ -24,6 +26,8 @@ class CommonButton extends StatelessWidget {
     this.onTap,
     required this.contentColor,
     this.isDisabled = false,
+    this.borderRadius,
+    this.fontSize,
   });
 
   @override
@@ -33,14 +37,19 @@ class CommonButton extends StatelessWidget {
       child: Opacity(
         opacity: isDisabled ? 0.5 : 1,
         child: Container(
+          padding: padding ??
+              const EdgeInsets.symmetric(
+                vertical: 7,
+              ),
           width: double.infinity,
-          height: 50.0,
+          // height: 50.0,
           decoration: BoxDecoration(
             color: AppColors.primaryColor,
             border: Border.all(
               color: AppColors.primaryBorderColor,
               width: 2.0,
             ),
+            borderRadius: borderRadius,
           ),
           child: isLoading
               ? Row(
@@ -53,12 +62,11 @@ class CommonButton extends StatelessWidget {
                   child: Text(
                   text,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: Colors.white,
-                    fontSize: 20,
+                    fontSize: fontSize ?? 20,
                     fontFamily: 'EB Garamond',
                     fontWeight: FontWeight.w500,
-                    // height: 0,
                     letterSpacing: 4,
                   ),
                 )),
