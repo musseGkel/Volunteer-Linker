@@ -4,13 +4,16 @@ import 'package:volunteer_linker/constants/app_colors.dart';
 class ProfileItem extends StatelessWidget {
   final String title;
   final String subtitle;
-  final Function()? onTap;
+  final Function()? onEditPressed;
+
+  final bool isOnEditMode;
 
   const ProfileItem({
     super.key,
     required this.title,
     required this.subtitle,
-    this.onTap,
+    this.isOnEditMode = false,
+    this.onEditPressed,
   });
 
   @override
@@ -20,43 +23,64 @@ class ProfileItem extends StatelessWidget {
       child: Material(
         elevation: 15,
         borderRadius: BorderRadius.circular(10),
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            border: const Border(
-              bottom: BorderSide(
-                color: AppColors.greyColor,
-                width: 0.5,
+        child: Stack(
+          children: [
+            Container(
+              padding: EdgeInsets.only(
+                top: 6,
+                bottom: 6,
+                left: isOnEditMode ? 10 : 10,
+                right: isOnEditMode ? 25 : 10,
+              ),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                border: const Border(
+                  bottom: BorderSide(
+                    color: AppColors.greyColor,
+                    width: 0.5,
+                  ),
+                ),
+              ),
+              child: Row(
+                textBaseline: TextBaseline.alphabetic,
+                crossAxisAlignment: CrossAxisAlignment.baseline,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      title,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        subtitle,
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ),
-          child: Row(
-            textBaseline: TextBaseline.alphabetic,
-            crossAxisAlignment: CrossAxisAlignment.baseline,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+            if (isOnEditMode)
+              Positioned(
+                top: 0,
+                right: 0,
+                child: IconButton(
+                  onPressed: onEditPressed,
+                  icon: const Icon(
+                    Icons.edit,
+                    color: AppColors.primaryColor,
                   ),
                 ),
               ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    subtitle,
-                    maxLines: 3, // Allows unlimited lines
-                    overflow: TextOverflow.ellipsis, // Make overflow visible
-                  ),
-                ),
-              ),
-            ],
-          ),
+          ],
         ),
       ),
     );
