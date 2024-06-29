@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:volunteer_linker/constants/app_colors.dart';
-import 'package:volunteer_linker/features/profile/presentation/bloc/bloc/keyword_selection_bloc.dart';
+import 'package:volunteer_linker/features/profile/presentation/bloc/key_selection_bloc/keyword_selection_bloc.dart';
 
 class KeywordsSelection extends StatelessWidget {
   final List<String> keywords;
