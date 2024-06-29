@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class EditProfileDetail extends StatelessWidget {
+class EditProfileDetailDialog extends StatelessWidget {
   final String initialValue;
   final Function(String) onSave;
   final String title;
 
-  const EditProfileDetail({
+  const EditProfileDetailDialog({
     super.key,
     required this.initialValue,
     required this.onSave,
