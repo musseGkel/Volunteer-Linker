@@ -23,7 +23,7 @@ class ProfileDetail extends StatelessWidget {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return EditSubtitleDialog(
+        return EditProfileDetail(
           initialValue: subtitle,
           title: title,
           onSave: (newSubtitle) {
