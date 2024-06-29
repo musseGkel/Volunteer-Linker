@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:volunteer_linker/constants/app_colors.dart';
-import '../widgets/profile_item.dart';
+import '../../../../constants/keyword_constants.dart';
+import '../widgets/keyword_selection.dart';
+import '../widgets/profile_detail.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -132,46 +134,51 @@ class ProfilePage extends StatelessWidget {
             child: ListView(
               padding: const EdgeInsets.all(16),
               children: [
-                ProfileItem(
+                ProfileDetail(
                   title: 'Name',
-                  subtitle:
-                      'lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet',
-                  onEditPressed: () {},
+                  subtitle: 'Musse',
+                  onEditPressed: (value) {},
                 ),
-                ProfileItem(
+                ProfileDetail(
                   title: 'Username',
                   subtitle: '',
-                  onEditPressed: () {},
+                  onEditPressed: (value) {},
                 ),
-                ProfileItem(
+                ProfileDetail(
                   title: 'Email',
                   subtitle: '',
-                  onEditPressed: () {},
+                  onEditPressed: (value) {},
                 ),
-                ProfileItem(
+                ProfileDetail(
                   title: 'Bio',
-                  subtitle: '',
-                  onEditPressed: () {},
+                  subtitle:
+                      'lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet',
+                  onEditPressed: (value) {},
                 ),
-                ProfileItem(
+                ProfileDetail(
                   title: 'Interests',
                   subtitle: '',
-                  onEditPressed: () {},
+                  onEditPressed: (value) {},
                 ),
-                ProfileItem(
+                ProfileDetail(
                   title: 'Skills',
                   subtitle: '',
-                  onEditPressed: () {},
+                  onEditPressed: (value) {},
                 ),
-                ProfileItem(
+                ProfileDetail(
                   title: 'Availability',
                   subtitle: '',
-                  onEditPressed: () {},
+                  onEditPressed: (value) {},
                 ),
-                ProfileItem(
+                ProfileDetail(
                   title: 'Volunteer Activities',
                   subtitle: '',
-                  onEditPressed: () {},
+                  onEditPressed: (value) {},
+                ),
+                const KeywordsSelection(
+                  keywords: AppKeywordConstants.skills,
+                  title: 'Interests',
+                  canEdit: true,
                 ),
               ],
             ),
