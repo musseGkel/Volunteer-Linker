@@ -2,17 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:volunteer_linker/constants/app_colors.dart';
 import 'package:volunteer_linker/features/profile/presentation/bloc/key_selection_bloc/keyword_selection_bloc.dart';
-import '../../../../constants/keyword_constants.dart';
-import '../widgets/keyword_selection.dart';
+import '../../../../core/enums.dart';
+import '../bloc/profile_detail_bloc/profile_detail_bloc.dart';
 import '../widgets/profile_detail.dart';
+import '../widgets/profile_detail_expansion_tile.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => KeywordSelectionBloc(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<KeywordSelectionBloc>(
+          create: (context) => KeywordSelectionBloc(),
+        ),
+        BlocProvider<ProfileDetailBloc>(
+          create: (context) => ProfileDetailBloc(),
+        ),
+      ],
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: AppColors.transparent,
@@ -143,47 +151,42 @@ class ProfilePage extends StatelessWidget {
                     title: 'Name',
                     subtitle: 'Musse',
                     onEditPressed: (value) {},
+                    editType: ProfileDetailEditType.textField,
                   ),
                   ProfileDetail(
                     title: 'Username',
                     subtitle: '',
                     onEditPressed: (value) {},
+                    editType: ProfileDetailEditType.textField,
                   ),
                   ProfileDetail(
                     title: 'Email',
                     subtitle: '',
                     onEditPressed: (value) {},
+                    editType: ProfileDetailEditType.textField,
                   ),
                   ProfileDetail(
                     title: 'Bio',
                     subtitle:
                         'lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet',
                     onEditPressed: (value) {},
+                    editType: ProfileDetailEditType.textField,
                   ),
-                  ProfileDetail(
-                    title: 'Interests',
-                    subtitle: '',
-                    onEditPressed: (value) {},
+                  const ProfileDetailExpansionTile(
+                    profileDetailType: ProfileDetailType.interests,
+                    editMode: true,
                   ),
-                  ProfileDetail(
-                    title: 'Skills',
-                    subtitle: '',
-                    onEditPressed: (value) {},
+                  const ProfileDetailExpansionTile(
+                    profileDetailType: ProfileDetailType.skills,
+                    editMode: true,
                   ),
-                  ProfileDetail(
-                    title: 'Availability',
-                    subtitle: '',
-                    onEditPressed: (value) {},
+                  const ProfileDetailExpansionTile(
+                    profileDetailType: ProfileDetailType.availability,
+                    editMode: false,
                   ),
-                  ProfileDetail(
-                    title: 'Volunteer Activities',
-                    subtitle: '',
-                    onEditPressed: (value) {},
-                  ),
-                  const KeywordsSelection(
-                    keywords: AppKeywordConstants.skills,
-                    title: 'Interests',
-                    canEdit: true,
+                  const ProfileDetailExpansionTile(
+                    profileDetailType: ProfileDetailType.volunteerActivities,
+                    editMode: false,
                   ),
                 ],
               ),
