@@ -181,11 +181,11 @@ class ProfilePage extends StatelessWidget {
                     editMode: true,
                   ),
                   const ProfileDetailExpansionTile(
-                    profileDetailType: ProfileDetailType.availability,
+                    profileDetailType: ProfileDetailType.volunteerActivities,
                     editMode: false,
                   ),
                   const ProfileDetailExpansionTile(
-                    profileDetailType: ProfileDetailType.volunteerActivities,
+                    profileDetailType: ProfileDetailType.availability,
                     editMode: false,
                   ),
                 ],
