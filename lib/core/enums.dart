@@ -8,6 +8,22 @@ enum AuthMode {
   register,
 }
 
+enum ProfileDetailEditType {
+  textField,
+  expansionTile,
+}
+
+enum ProfileDetailType {
+  name,
+  username,
+  email,
+  bio,
+  interests,
+  skills,
+  availability,
+  volunteerActivities,
+}
+
 String enumToString(Object enumValue) {
   return enumValue.toString().split('.').last;
 }
