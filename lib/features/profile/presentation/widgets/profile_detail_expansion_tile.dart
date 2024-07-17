@@ -111,9 +111,13 @@ class ProfileDetailExpansionTile extends StatelessWidget {
                 if (profileDetailType == ProfileDetailType.availability)
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: AvailabilityWidget(),
+                    child: AvailabilityWidget(
+                      editMode: editMode,
+                    ),
                   ),
-                const SizedBox(height: 10),
+                const SizedBox(
+                  height: 10,
+                ),
               ],
             ),
           ),
