@@ -41,11 +41,12 @@ class AuthDatasource {
                 id: user.uid,
                 name: name.trim(),
                 email: user.email!,
+                username: "",
                 userType: userType,
                 profilePictureUrl: '',
                 interests: [],
                 skills: [],
-                availability: '',
+                availability: [],
                 volunteerActivities: [],
               ).toJson(),
             );
@@ -65,7 +66,6 @@ class AuthDatasource {
             );
       }
     }
-
     return currentUser;
   }
 
