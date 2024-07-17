@@ -5,6 +5,9 @@ import '../../../../constants/app_colors.dart';
 import '../../../../core/widgets/common_button.dart';
 
 class AvailabilityWidget extends StatefulWidget {
+  final bool editMode;
+  const AvailabilityWidget({super.key, this.editMode = false});
+
   @override
   _AvailabilityWidgetState createState() => _AvailabilityWidgetState();
 }
@@ -113,52 +116,54 @@ class _AvailabilityWidgetState extends State<AvailabilityWidget> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: 8.0,
-              horizontal: 16,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 12.0, vertical: 8.0),
-                    decoration: BoxDecoration(
-                      color: AppColors.backgroundColor,
-                      borderRadius: BorderRadius.circular(8.0),
-                      border: Border.all(color: AppColors.greyColor),
-                    ),
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton<String>(
-                        isExpanded: true,
-                        hint: const Text('Select a day'),
-                        value: _selectedDay,
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            _selectedDay = newValue;
-                          });
-                        },
-                        items: AppKeywordConstants.daysOfWeek
-                            .map<DropdownMenuItem<String>>(
-                          (String day) {
-                            return DropdownMenuItem<String>(
-                              value: day,
-                              child: Text(day),
-                            );
+          if (widget.editMode)
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: 8.0,
+                horizontal: 16,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12.0, vertical: 8.0),
+                      decoration: BoxDecoration(
+                        color: AppColors.backgroundColor,
+                        borderRadius: BorderRadius.circular(8.0),
+                        border: Border.all(color: AppColors.greyColor),
+                      ),
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
+                          isExpanded: true,
+                          hint: const Text('Select a day'),
+                          value: _selectedDay,
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              _selectedDay = newValue;
+                            });
                           },
-                        ).toList(),
+                          items: AppKeywordConstants.daysOfWeek
+                              .map<DropdownMenuItem<String>>(
+                            (String day) {
+                              return DropdownMenuItem<String>(
+                                value: day,
+                                child: Text(day),
+                              );
+                            },
+                          ).toList(),
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          const SizedBox(
-            height: 8,
-          ),
+          if (widget.editMode)
+            const SizedBox(
+              height: 8,
+            ),
           _showTimeError
               ? Center(
                   child: Text(
@@ -167,82 +172,87 @@ class _AvailabilityWidgetState extends State<AvailabilityWidget> {
                   ),
                 )
               : const SizedBox.shrink(),
-          const SizedBox(
-            height: 8,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 60,
-              right: 60,
-              bottom: 6,
-              top: 6,
+          if (widget.editMode)
+            Column(
+              children: [
+                const SizedBox(
+                  height: 8,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 60,
+                    right: 60,
+                    bottom: 6,
+                    top: 6,
+                  ),
+                  child: CommonButton(
+                    borderRadius: BorderRadius.circular(8),
+                    fontSize: 14,
+                    backgroundColor: AppColors.primaryColor,
+                    borderColor: AppColors.primaryBorderColor,
+                    text: _selectedStartTime == null
+                        ? 'Select Start Time'
+                        : 'Start Time: ${_selectedStartTime!.format(context)}',
+                    textColor: AppColors.primaryTextColor,
+                    onTap: () => _pickTime(context, true),
+                    contentColor: AppColors.primaryTextColor,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 60,
+                    right: 60,
+                    bottom: 6,
+                  ),
+                  child: CommonButton(
+                    borderRadius: BorderRadius.circular(8),
+                    fontSize: 14,
+                    backgroundColor: AppColors.primaryColor,
+                    borderColor: AppColors.primaryBorderColor,
+                    text: _selectedEndTime == null
+                        ? 'Select End Time'
+                        : 'End Time: ${_selectedEndTime!.format(context)}',
+                    textColor: AppColors.primaryTextColor,
+                    onTap: () => _pickTime(context, false),
+                    contentColor: AppColors.primaryTextColor,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 60,
+                    right: 60,
+                    bottom: 6,
+                  ),
+                  child: CommonButton(
+                    borderRadius: BorderRadius.circular(8),
+                    fontSize: 14,
+                    backgroundColor: AppColors.primaryColor,
+                    borderColor: AppColors.primaryBorderColor,
+                    text: 'Add Availability',
+                    textColor: AppColors.primaryTextColor,
+                    onTap: _addAvailability,
+                    contentColor: AppColors.primaryTextColor,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 60,
+                    right: 60,
+                  ),
+                  child: CommonButton(
+                    borderRadius: BorderRadius.circular(8),
+                    fontSize: 14,
+                    backgroundColor: AppColors.primaryColor,
+                    borderColor: AppColors.primaryBorderColor,
+                    text: 'Export Availability',
+                    textColor: AppColors.primaryTextColor,
+                    onTap: _exportAvailability,
+                    contentColor: AppColors.primaryTextColor,
+                  ),
+                ),
+                const SizedBox(height: 20),
+              ],
             ),
-            child: CommonButton(
-              borderRadius: BorderRadius.circular(8),
-              fontSize: 14,
-              backgroundColor: AppColors.primaryColor,
-              borderColor: AppColors.primaryBorderColor,
-              text: _selectedStartTime == null
-                  ? 'Select Start Time'
-                  : 'Start Time: ${_selectedStartTime!.format(context)}',
-              textColor: AppColors.primaryTextColor,
-              onTap: () => _pickTime(context, true),
-              contentColor: AppColors.primaryTextColor,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 60,
-              right: 60,
-              bottom: 6,
-            ),
-            child: CommonButton(
-              borderRadius: BorderRadius.circular(8),
-              fontSize: 14,
-              backgroundColor: AppColors.primaryColor,
-              borderColor: AppColors.primaryBorderColor,
-              text: _selectedEndTime == null
-                  ? 'Select End Time'
-                  : 'End Time: ${_selectedEndTime!.format(context)}',
-              textColor: AppColors.primaryTextColor,
-              onTap: () => _pickTime(context, false),
-              contentColor: AppColors.primaryTextColor,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 60,
-              right: 60,
-              bottom: 6,
-            ),
-            child: CommonButton(
-              borderRadius: BorderRadius.circular(8),
-              fontSize: 14,
-              backgroundColor: AppColors.primaryColor,
-              borderColor: AppColors.primaryBorderColor,
-              text: 'Add Availability',
-              textColor: AppColors.primaryTextColor,
-              onTap: _addAvailability,
-              contentColor: AppColors.primaryTextColor,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 60,
-              right: 60,
-            ),
-            child: CommonButton(
-              borderRadius: BorderRadius.circular(8),
-              fontSize: 14,
-              backgroundColor: AppColors.primaryColor,
-              borderColor: AppColors.primaryBorderColor,
-              text: 'Export Availability',
-              textColor: AppColors.primaryTextColor,
-              onTap: _exportAvailability,
-              contentColor: AppColors.primaryTextColor,
-            ),
-          ),
-          const SizedBox(height: 20),
           const Text(
             'Selected Times:',
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
