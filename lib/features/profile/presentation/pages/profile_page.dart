@@ -19,10 +19,6 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    print("ProfilePage initState");
-    print(
-      context.read<ProfileBloc>().state,
-    );
     context.read<ProfileBloc>().add(
           GetProfile(
             state: context.read<ProfileBloc>().state,
@@ -133,30 +129,30 @@ class _ProfilePageState extends State<ProfilePage> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            CircleAvatar(
+                            const CircleAvatar(
                               radius: 70,
                               backgroundImage: NetworkImage(
                                 "https://img.freepik.com/premium-vector/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-vector-illustration_561158-3383.jpg?w=740",
                               ),
                             ),
-                            SizedBox(height: 10),
+                            const SizedBox(height: 10),
                             Text(
                               profileState.user?.name ?? "",
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 22,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            Text(
+                            const Text(
                               true ? "Volunteer" : "Organization",
                               style: TextStyle(
                                 color: AppColors.primaryTextColor,
                                 fontSize: 16,
                               ),
                             ),
-                            SizedBox(height: 20),
-                            Row(
+                            const SizedBox(height: 20),
+                            const Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
@@ -226,30 +222,57 @@ class _ProfilePageState extends State<ProfilePage> {
                           children: [
                             ProfileDetail(
                               title: 'Name',
-                              subtitle: profileState.user?.name ?? "",
-                              onEditPressed: (value) {},
+                              subtitle: profileState.tempName ?? "",
+                              onEditPressed: (value) {
+                                BlocProvider.of<ProfileBloc>(context).add(
+                                  UpdateTempName(
+                                    state: profileState,
+                                    name: value,
+                                  ),
+                                );
+                              },
                               editType: ProfileDetailEditType.textField,
                               isOnEditMode: profileState.editMode,
                             ),
                             ProfileDetail(
                               title: 'Username',
-                              subtitle: profileState.user?.username ?? "",
-                              onEditPressed: (value) {},
+                              subtitle: profileState.tempUsername ?? "",
+                              onEditPressed: (value) {
+                                BlocProvider.of<ProfileBloc>(context).add(
+                                  UpdateTempUsername(
+                                    state: profileState,
+                                    username: value,
+                                  ),
+                                );
+                              },
                               editType: ProfileDetailEditType.textField,
                               isOnEditMode: profileState.editMode,
                             ),
                             ProfileDetail(
                               title: 'Email',
-                              subtitle: '',
-                              onEditPressed: (value) {},
+                              subtitle: profileState.tempEmail ?? "",
+                              onEditPressed: (value) {
+                                BlocProvider.of<ProfileBloc>(context).add(
+                                  UpdateTempEmail(
+                                    state: profileState,
+                                    email: value,
+                                  ),
+                                );
+                              },
                               editType: ProfileDetailEditType.textField,
                               isOnEditMode: profileState.editMode,
                             ),
                             ProfileDetail(
                               title: 'Bio',
-                              subtitle:
-                                  'lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet',
-                              onEditPressed: (value) {},
+                              subtitle: profileState.tempBio ?? "",
+                              onEditPressed: (value) {
+                                BlocProvider.of<ProfileBloc>(context).add(
+                                  UpdateTempBio(
+                                    state: profileState,
+                                    bio: value,
+                                  ),
+                                );
+                              },
                               editType: ProfileDetailEditType.textField,
                               isOnEditMode: profileState.editMode,
                             ),
