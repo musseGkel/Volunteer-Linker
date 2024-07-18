@@ -30,7 +30,7 @@ class ProfileDetail extends StatelessWidget {
           title: title,
           onSave: (newSubtitle) {
             if (onEditPressed != null) {
-              onEditPressed!("subtitle");
+              onEditPressed!(newSubtitle);
             }
           },
         );
