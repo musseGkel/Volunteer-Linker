@@ -89,12 +89,9 @@ class UpdateProfile extends ProfileEvent {
       yield updateState;
       return;
     } else {
-      print("##########################");
-      print("Profile Updated");
-      print(response.statusCode);
-      print(response.body);
       updateState = state.copywith(
         isLoading: false,
+        editMode: false,
       );
 
       yield updateState;
@@ -122,22 +119,93 @@ class GetProfile extends ProfileEvent {
     );
 
     if (response.statusCode != 200) {
-      print("##########################");
-      print("Profile Not Retrieved");
       updateState = state.copywith(
         isLoading: false,
       );
       yield updateState;
       return;
     } else {
-      print("##########################");
-      print("Profile Retrieved");
-      print(response.statusCode);
-      print(response.body);
       updateState = state.copywith(
         user: response.body as UserData,
+        isLoading: false,
+        tempName: response.body.name,
+        tempUsername: response.body.username,
+        tempEmail: response.body.email,
+        tempBio: response.body.bio,
       );
       yield updateState;
     }
+  }
+}
+
+class UpdateTempName extends ProfileEvent {
+  final String name;
+  final ProfileState state;
+
+  const UpdateTempName({
+    required this.state,
+    required this.name,
+  });
+
+  @override
+  Stream<ProfileState> handle() async* {
+    ProfileState updateState = state.copywith(
+      tempName: name,
+    );
+    yield updateState;
+  }
+}
+
+class UpdateTempUsername extends ProfileEvent {
+  final String username;
+  final ProfileState state;
+
+  const UpdateTempUsername({
+    required this.state,
+    required this.username,
+  });
+
+  @override
+  Stream<ProfileState> handle() async* {
+    ProfileState updateState = state.copywith(
+      tempUsername: username,
+    );
+    yield updateState;
+  }
+}
+
+class UpdateTempEmail extends ProfileEvent {
+  final String email;
+  final ProfileState state;
+
+  const UpdateTempEmail({
+    required this.state,
+    required this.email,
+  });
+
+  @override
+  Stream<ProfileState> handle() async* {
+    ProfileState updateState = state.copywith(
+      tempEmail: email,
+    );
+    yield updateState;
+  }
+}
+
+class UpdateTempBio extends ProfileEvent {
+  final String bio;
+  final ProfileState state;
+
+  const UpdateTempBio({
+    required this.state,
+    required this.bio,
+  });
+
+  @override
+  Stream<ProfileState> handle() async* {
+    ProfileState updateState = state.copywith(
+      tempBio: bio,
+    );
+    yield updateState;
   }
 }
