@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../../../core/enums.dart';
 import '../../../../core/models/organization.dart';
-import '../../../../core/models/user.dart';
+import '../../../../core/models/user_data.dart';
 
 class AuthDatasource {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -46,7 +46,7 @@ class AuthDatasource {
                 profilePictureUrl: '',
                 interests: [],
                 skills: [],
-                availability: [],
+                availability: {},
                 volunteerActivities: [],
               ).toJson(),
             );
