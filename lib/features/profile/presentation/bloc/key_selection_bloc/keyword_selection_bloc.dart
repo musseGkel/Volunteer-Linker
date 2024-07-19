@@ -6,7 +6,13 @@ part 'keyword_selection_state.dart';
 
 class KeywordSelectionBloc
     extends Bloc<KeywordSelectionEvent, KeywordSelectionState> {
-  KeywordSelectionBloc() : super(const KeywordSelectionState()) {
+  final List<String> selectedWords;
+  KeywordSelectionBloc(this.selectedWords)
+      : super(
+          KeywordSelectionState(
+            selectedKeywords: selectedWords,
+          ),
+        ) {
     on<KeywordSelectionEvent>(
       (event, emit) async {
         await emit.forEach(
