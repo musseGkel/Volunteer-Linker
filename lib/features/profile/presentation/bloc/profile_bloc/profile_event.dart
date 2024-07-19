@@ -117,6 +117,8 @@ class GetProfile extends ProfileEvent {
         tempInterests: response.body.interests,
         tempAvailability: response.body.availability,
         tempVolunteerActivities: response.body.volunteerActivities,
+        tempPhoneNumber: response.body.phoneNumber,
+        tempProfilePictureUrl: response.body.profilePictureUrl,
       );
 
       yield updateState;
