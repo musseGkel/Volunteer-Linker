@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:volunteer_linker/core/models/user.dart';
+import 'package:volunteer_linker/core/models/user_data.dart';
 import '../../../../services/api_reponse.dart';
 
 class ProfileDatasource {
@@ -11,7 +11,6 @@ class ProfileDatasource {
   Future<ApiResponse> getProfile(userId) async {
     try {
       var response = await _firestore.collection('users').doc(userId).get();
-
       return ApiResponse(
         statusCode: 200,
         message: "Success",

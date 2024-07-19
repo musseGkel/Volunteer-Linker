@@ -1,5 +1,5 @@
 import 'package:volunteer_linker/services/api_reponse.dart';
-import '../../../../core/models/user.dart';
+import '../../../../core/models/user_data.dart';
 import '../repository/profile_repository.dart';
 
 class UpdateProfileUsecase {

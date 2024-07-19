@@ -1,6 +1,6 @@
 import 'package:volunteer_linker/features/profile/data/datasource/profile_datasource.dart';
 
-import '../../../../core/models/user.dart';
+import '../../../../core/models/user_data.dart';
 import '../../../../services/api_reponse.dart';
 import '../../domain/repository/profile_repository.dart';
 
