@@ -12,10 +12,11 @@ class ProfileState extends Equatable {
   final String? tempBio;
   final UserType? tempUserType;
   final String? tempProfilePictureUrl;
-  final List<dynamic>? tempInterests;
-  final List<dynamic>? tempSkills;
-  final List<dynamic>? tempAvailability;
-  final List<dynamic>? tempVolunteerActivities;
+  final List<String>? tempInterests;
+  final List<String>? tempSkills;
+  final Map<String, List<TimeRange>>? tempAvailability;
+  final List<String>? tempVolunteerActivities;
+  final String? tempPhoneNumber;
 
   const ProfileState({
     this.editMode = false,
@@ -32,6 +33,7 @@ class ProfileState extends Equatable {
     this.tempSkills,
     this.tempAvailability,
     this.tempVolunteerActivities,
+    this.tempPhoneNumber,
   });
 
   @override
@@ -39,6 +41,17 @@ class ProfileState extends Equatable {
         editMode,
         userId,
         isLoading,
+        tempName ?? "",
+        tempUsername ?? "",
+        tempEmail ?? "",
+        tempBio ?? "",
+        tempUserType ?? UserType.volunteer,
+        tempProfilePictureUrl ?? "",
+        tempInterests ?? [],
+        tempSkills ?? [],
+        tempAvailability ?? {},
+        tempVolunteerActivities ?? [],
+        tempPhoneNumber ?? "",
       ];
 
   copywith({
@@ -52,10 +65,11 @@ class ProfileState extends Equatable {
     String? tempBio,
     UserType? tempUserType,
     String? tempProfilePictureUrl,
-    List<dynamic>? tempInterests,
-    List<dynamic>? tempSkills,
-    List<dynamic>? tempAvailability,
-    List<dynamic>? tempVolunteerActivities,
+    List<String>? tempInterests,
+    List<String>? tempSkills,
+    final Map<String, List<TimeRange>>? tempAvailability,
+    List<String>? tempVolunteerActivities,
+    String? tempPhoneNumber,
   }) {
     return ProfileState(
       editMode: editMode ?? this.editMode,
@@ -74,6 +88,15 @@ class ProfileState extends Equatable {
       tempAvailability: tempAvailability ?? this.tempAvailability,
       tempVolunteerActivities:
           tempVolunteerActivities ?? this.tempVolunteerActivities,
+      tempPhoneNumber: tempPhoneNumber ?? this.tempPhoneNumber,
     );
+  }
+
+  displayUserType() {
+    if (user?.userType == UserType.volunteer) {
+      return 'Volunteer';
+    } else {
+      return 'Organization';
+    }
   }
 }
