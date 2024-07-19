@@ -31,7 +31,9 @@ class _ProfilePageState extends State<ProfilePage> {
     return MultiBlocProvider(
       providers: [
         BlocProvider<KeywordSelectionBloc>(
-          create: (context) => KeywordSelectionBloc(),
+          create: (context) => KeywordSelectionBloc(
+            context.read<ProfileBloc>().state.tempSkills ?? [] as List<String>,
+          ),
         ),
         BlocProvider<ProfileDetailBloc>(
           create: (context) => ProfileDetailBloc(),
@@ -46,13 +48,12 @@ class _ProfilePageState extends State<ProfilePage> {
                 )
               : Scaffold(
                   appBar: AppBar(
-                    backgroundColor: Colors
-                        .transparent, // Replace with AppColors.transparent
+                    backgroundColor: AppColors.transparent,
                     elevation: 0,
                     leading: const Icon(
                       Icons.arrow_back,
-                      color: Colors.black,
-                    ), // Replace with AppColors.backgroundColor
+                      color: AppColors.primaryColor,
+                    ),
                     actions: [
                       profileState.editMode
                           ? IconButton(
@@ -62,19 +63,9 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                               onPressed: () {
                                 BlocProvider.of<ProfileBloc>(context).add(
-                                  ProfileEditModeChanged(
-                                    state: profileState,
-                                  ),
-                                );
-
-                                BlocProvider.of<ProfileBloc>(context).add(
                                   UpdateProfile(
                                     state: profileState,
                                     id: profileState.userId,
-                                    name: 'Musse Gkel',
-                                    email: 'musseg437@gmail.com',
-                                    userType: UserType.volunteer,
-                                    username: 'user_001',
                                   ),
                                 );
                               },
@@ -137,16 +128,16 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                             const SizedBox(height: 10),
                             Text(
-                              profileState.user?.name ?? "",
+                              profileState.tempName ?? "",
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 22,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            const Text(
-                              true ? "Volunteer" : "Organization",
-                              style: TextStyle(
+                            Text(
+                              profileState.displayUserType(),
+                              style: const TextStyle(
                                 color: AppColors.primaryTextColor,
                                 fontSize: 16,
                               ),
@@ -276,10 +267,26 @@ class _ProfilePageState extends State<ProfilePage> {
                               editType: ProfileDetailEditType.textField,
                               isOnEditMode: profileState.editMode,
                             ),
-                            ProfileDetailExpansionTile(
-                              profileDetailType: ProfileDetailType.interests,
-                              editMode: profileState.editMode,
+
+                            ProfileDetail(
+                              title: 'Phone Number',
+                              subtitle: profileState.tempPhoneNumber ?? "",
+                              onEditPressed: (value) {
+                                BlocProvider.of<ProfileBloc>(context).add(
+                                  UpdatePhoneNumber(
+                                    state: profileState,
+                                    phoneNumber: value.toString(),
+                                  ),
+                                );
+                              },
+                              editType: ProfileDetailEditType.textField,
+                              isOnEditMode: profileState.editMode,
+                              keyboardType: TextInputType.phone,
                             ),
+                            // ProfileDetailExpansionTile(
+                            //   profileDetailType: ProfileDetailType.interests,
+                            //   editMode: profileState.editMode,
+                            // ),
                             ProfileDetailExpansionTile(
                               profileDetailType: ProfileDetailType.skills,
                               editMode: profileState.editMode,
