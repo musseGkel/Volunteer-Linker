@@ -4,12 +4,14 @@ class EditProfileDetailDialog extends StatelessWidget {
   final String initialValue;
   final Function(String) onSave;
   final String title;
+  final TextInputType keyboardType;
 
   const EditProfileDetailDialog({
     super.key,
     required this.initialValue,
     required this.onSave,
     required this.title,
+    required this.keyboardType,
   });
 
   @override
@@ -20,6 +22,7 @@ class EditProfileDetailDialog extends StatelessWidget {
     return AlertDialog(
       title: Text('Edit $title'),
       content: TextField(
+        keyboardType: TextInputType.number,
         controller: controller,
         maxLines: null,
         decoration: InputDecoration(
