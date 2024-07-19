@@ -30,31 +30,11 @@ class ProfileEditModeChanged extends ProfileEvent {
 
 class UpdateProfile extends ProfileEvent {
   final String id;
-  final String name;
-  final String email;
-  final String username;
-  final String? bio;
-  final UserType userType;
-  final String? profilePictureUrl;
-  final List<String> interests;
-  final List<String> skills;
-  final List<String> availability;
-  final List<String> volunteerActivities;
   final ProfileState state;
 
   const UpdateProfile({
     required this.state,
     required this.id,
-    required this.name,
-    required this.email,
-    required this.username,
-    this.bio,
-    required this.userType,
-    this.profilePictureUrl,
-    this.interests = const [],
-    this.skills = const [],
-    this.availability = const [],
-    this.volunteerActivities = const [],
   });
 
   @override
@@ -69,16 +49,17 @@ class UpdateProfile extends ProfileEvent {
     ).updateProfile(
       user: UserData(
         id: id,
-        name: name,
-        email: email,
-        username: username,
-        bio: bio ?? "",
-        userType: userType,
-        profilePictureUrl: profilePictureUrl ?? "",
-        interests: interests,
-        skills: skills,
-        availability: availability,
-        volunteerActivities: volunteerActivities,
+        name: state.tempName ?? "",
+        email: state.tempEmail ?? "",
+        username: state.tempUsername ?? "",
+        bio: state.tempBio ?? "",
+        userType: state.user?.userType ?? UserType.volunteer,
+        profilePictureUrl: state.user?.profilePictureUrl ?? "",
+        interests: state.tempInterests ?? [],
+        skills: state.tempSkills ?? [],
+        availability: state.tempAvailability ?? {},
+        volunteerActivities: state.tempVolunteerActivities ?? [],
+        phoneNumber: state.tempPhoneNumber ?? "",
       ),
     );
 
@@ -132,7 +113,12 @@ class GetProfile extends ProfileEvent {
         tempUsername: response.body.username,
         tempEmail: response.body.email,
         tempBio: response.body.bio,
+        tempSkills: response.body.skills,
+        tempInterests: response.body.interests,
+        tempAvailability: response.body.availability,
+        tempVolunteerActivities: response.body.volunteerActivities,
       );
+
       yield updateState;
     }
   }
@@ -205,6 +191,60 @@ class UpdateTempBio extends ProfileEvent {
   Stream<ProfileState> handle() async* {
     ProfileState updateState = state.copywith(
       tempBio: bio,
+    );
+    yield updateState;
+  }
+}
+
+class UpdatePhoneNumber extends ProfileEvent {
+  final String phoneNumber;
+  final ProfileState state;
+
+  const UpdatePhoneNumber({
+    required this.state,
+    required this.phoneNumber,
+  });
+
+  @override
+  Stream<ProfileState> handle() async* {
+    ProfileState updateState = state.copywith(
+      tempPhoneNumber: phoneNumber,
+    );
+    yield updateState;
+  }
+}
+
+class UpdateSkills extends ProfileEvent {
+  final List<String> skills;
+  final ProfileState state;
+
+  const UpdateSkills({
+    required this.state,
+    required this.skills,
+  });
+
+  @override
+  Stream<ProfileState> handle() async* {
+    ProfileState updateState = state.copywith(
+      tempSkills: skills,
+    );
+    yield updateState;
+  }
+}
+
+class UpdateAvailability extends ProfileEvent {
+  final Map<String, List<TimeRange>> availability;
+  final ProfileState state;
+
+  const UpdateAvailability({
+    required this.state,
+    required this.availability,
+  });
+
+  @override
+  Stream<ProfileState> handle() async* {
+    ProfileState updateState = state.copywith(
+      tempAvailability: availability,
     );
     yield updateState;
   }
