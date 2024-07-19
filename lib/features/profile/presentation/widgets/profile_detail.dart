@@ -10,9 +10,11 @@ class ProfileDetail extends StatelessWidget {
   final bool isOnEditMode;
   final Function()? onTap;
   final ProfileDetailEditType editType;
+  final TextInputType keyboardType;
 
   const ProfileDetail({
     super.key,
+    this.keyboardType = TextInputType.text,
     required this.title,
     required this.subtitle,
     this.isOnEditMode = true,
@@ -28,6 +30,7 @@ class ProfileDetail extends StatelessWidget {
         return EditProfileDetailDialog(
           initialValue: subtitle,
           title: title,
+          keyboardType: keyboardType,
           onSave: (newSubtitle) {
             if (onEditPressed != null) {
               onEditPressed!(newSubtitle);
