@@ -44,7 +44,7 @@ class UserData {
           MapEntry(key, value.map((timeRange) => timeRange.toJson()).toList())),
       'volunteerActivities': volunteerActivities,
       'bio': bio,
-      phoneNumber: phoneNumber,
+      'phoneNumber': phoneNumber,
     };
   }
 

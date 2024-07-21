@@ -4,6 +4,7 @@ class Organization {
   final String id;
   final String name;
   final String email;
+  final String userName;
   final UserType userType;
   final String contactNumber;
   final String description;
@@ -15,6 +16,7 @@ class Organization {
     required this.id,
     required this.name,
     required this.email,
+    required this.userName,
     this.userType = UserType.organization,
     this.contactNumber = "",
     this.description = "",
@@ -29,6 +31,7 @@ class Organization {
       'id': id,
       'name': name,
       'email': email,
+      'userName': userName,
       'userType': enumToString(userType),
       'contactNumber': contactNumber,
       'description': description,
@@ -44,12 +47,13 @@ class Organization {
       id: json['id'],
       name: json['name'],
       email: json['email'],
+      userName: json['username'] ?? "",
       userType: enumFromString(UserType.values, json['userType']),
       contactNumber: json['contactNumber'],
       description: json['description'],
       address: json['address'],
       profilePictureUrl: json['profilePictureUrl'],
-      postedOpportunities: List<String>.from(json['postedOpportunities']),
+      postedOpportunities: List<String>.from(json['postedOpportunities']) ?? [],
     );
   }
 }
