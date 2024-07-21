@@ -43,25 +43,46 @@ class UpdateProfile extends ProfileEvent {
       isLoading: true,
     );
     yield updateState;
-
-    ApiResponse response = await ProfileRepositoryImpl(
-      datasource: ProfileDatasource(),
-    ).updateProfile(
-      user: UserData(
-        id: id,
-        name: state.tempName ?? "",
-        email: state.tempEmail ?? "",
-        username: state.tempUsername ?? "",
-        bio: state.tempBio ?? "",
-        userType: state.user?.userType ?? UserType.volunteer,
-        profilePictureUrl: state.user?.profilePictureUrl ?? "",
-        interests: state.tempInterests ?? [],
-        skills: state.tempSkills ?? [],
-        availability: state.tempAvailability ?? {},
-        volunteerActivities: state.tempVolunteerActivities ?? [],
-        phoneNumber: state.tempPhoneNumber ?? "",
-      ),
-    );
+    ApiResponse response;
+    if (state.checkUserType(UserType.volunteer)) {
+      response = await ProfileRepositoryImpl(
+        datasource: ProfileDatasource(),
+      ).updateProfile(
+        user: UserData(
+          id: id,
+          name: state.tempName ?? "",
+          email: state.tempEmail ?? "",
+          username: state.tempUsername ?? "",
+          bio: state.tempBio ?? "",
+          userType: state.user?.userType ?? UserType.volunteer,
+          profilePictureUrl:
+              "https://img.freepik.com/premium-vector/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-vector-illustration_561158-3383.jpg?w=740",
+          interests: state.tempInterests ?? [],
+          skills: state.tempSkills ?? [],
+          availability: state.tempAvailability ?? {},
+          volunteerActivities: state.tempVolunteerActivities ?? [],
+          phoneNumber: state.tempPhoneNumber ?? "",
+        ),
+      );
+    } else {
+      response = await ProfileRepositoryImpl(
+        datasource: ProfileDatasource(),
+      ).updateOrganizationProfile(
+        organization: Organization(
+          id: id,
+          name: state.tempName ?? "",
+          email: state.tempEmail ?? "",
+          userName: state.tempUsername ?? "",
+          userType: state.user?.userType ?? UserType.organization,
+          contactNumber: state.tempPhoneNumber ?? "",
+          description: state.tempBio ?? "",
+          address: state.tempAddress ?? "",
+          profilePictureUrl:
+              "https://img.freepik.com/premium-vector/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-vector-illustration_561158-3383.jpg?w=740",
+          postedOpportunities: [],
+        ),
+      );
+    }
 
     if (response.statusCode != 200) {
       updateState = state.copywith(
@@ -93,35 +114,73 @@ class GetProfile extends ProfileEvent {
       isLoading: true,
     );
     yield updateState;
-    ApiResponse response = await ProfileRepositoryImpl(
+    ApiResponse response;
+
+    ApiResponse profileInfoResponse = await ProfileRepositoryImpl(
       datasource: ProfileDatasource(),
-    ).getProfile(
+    ).getProfileInfo(
       userId: state.userId,
     );
 
-    if (response.statusCode != 200) {
+    if (profileInfoResponse.statusCode != 200) {
       updateState = state.copywith(
         isLoading: false,
+        error: profileInfoResponse.message,
       );
       yield updateState;
       return;
     } else {
-      updateState = state.copywith(
-        user: response.body as UserData,
-        isLoading: false,
-        tempName: response.body.name,
-        tempUsername: response.body.username,
-        tempEmail: response.body.email,
-        tempBio: response.body.bio,
-        tempSkills: response.body.skills,
-        tempInterests: response.body.interests,
-        tempAvailability: response.body.availability,
-        tempVolunteerActivities: response.body.volunteerActivities,
-        tempPhoneNumber: response.body.phoneNumber,
-        tempProfilePictureUrl: response.body.profilePictureUrl,
-      );
+      if (profileInfoResponse.body.userType == UserType.organization) {
+        response = await ProfileRepositoryImpl(
+          datasource: ProfileDatasource(),
+        ).getOrganizationProfile(
+          userId: state.userId,
+        );
+      } else {
+        response = await ProfileRepositoryImpl(
+          datasource: ProfileDatasource(),
+        ).getProfile(
+          userId: state.userId,
+        );
+      }
 
-      yield updateState;
+      if (response.statusCode != 200) {
+        updateState = state.copywith(
+          isLoading: false,
+        );
+        yield updateState;
+        return;
+      } else {
+        if (response.body.userType == UserType.organization) {
+          updateState = state.copywith(
+            organization: response.body as Organization,
+            isLoading: false,
+            tempName: response.body.name,
+            tempEmail: response.body.email,
+            tempPhoneNumber: response.body.contactNumber,
+            tempBio: response.body.description,
+            tempAddress: response.body.address,
+            tempProfilePictureUrl: response.body.profilePictureUrl,
+          );
+        } else {
+          updateState = state.copywith(
+            user: response.body as UserData,
+            isLoading: false,
+            tempName: response.body.name,
+            tempUsername: response.body.username,
+            tempEmail: response.body.email,
+            tempBio: response.body.bio,
+            tempSkills: response.body.skills,
+            tempInterests: response.body.interests,
+            tempAvailability: response.body.availability,
+            tempVolunteerActivities: response.body.volunteerActivities,
+            tempPhoneNumber: response.body.phoneNumber,
+            tempProfilePictureUrl: response.body.profilePictureUrl,
+          );
+        }
+
+        yield updateState;
+      }
     }
   }
 }
@@ -175,6 +234,24 @@ class UpdateTempEmail extends ProfileEvent {
   Stream<ProfileState> handle() async* {
     ProfileState updateState = state.copywith(
       tempEmail: email,
+    );
+    yield updateState;
+  }
+}
+
+class UpdateTempAddress extends ProfileEvent {
+  final String address;
+  final ProfileState state;
+
+  const UpdateTempAddress({
+    required this.state,
+    required this.address,
+  });
+
+  @override
+  Stream<ProfileState> handle() async* {
+    ProfileState updateState = state.copywith(
+      tempAddress: address,
     );
     yield updateState;
   }

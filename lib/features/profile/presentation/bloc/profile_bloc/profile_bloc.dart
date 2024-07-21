@@ -7,6 +7,7 @@ import 'package:volunteer_linker/features/profile/data/repository/profile_reposi
 import 'package:volunteer_linker/services/api_reponse.dart';
 
 import '../../../../../core/enums.dart';
+import '../../../../../core/models/organization.dart';
 
 part 'profile_event.dart';
 part 'profile_state.dart';
