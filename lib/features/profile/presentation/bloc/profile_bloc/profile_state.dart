@@ -3,9 +3,9 @@ part of 'profile_bloc.dart';
 class ProfileState extends Equatable {
   final bool editMode;
   final UserData? user;
+  final Organization? organization;
   final String userId;
   final bool isLoading;
-
   final String? tempName;
   final String? tempUsername;
   final String? tempEmail;
@@ -17,10 +17,13 @@ class ProfileState extends Equatable {
   final Map<String, List<TimeRange>>? tempAvailability;
   final List<String>? tempVolunteerActivities;
   final String? tempPhoneNumber;
+  final String? tempAddress;
+  final String? error;
 
   const ProfileState({
     this.editMode = false,
     this.user,
+    this.organization,
     required this.userId,
     this.isLoading = false,
     this.tempName,
@@ -33,11 +36,15 @@ class ProfileState extends Equatable {
     this.tempSkills,
     this.tempAvailability,
     this.tempVolunteerActivities,
-    this.tempPhoneNumber,
+    this.tempPhoneNumber = "",
+    this.tempAddress,
+    this.error,
   });
 
   @override
   List<Object> get props => [
+        if (user != null) user!,
+        if (organization != null) organization!,
         editMode,
         userId,
         isLoading,
@@ -52,11 +59,14 @@ class ProfileState extends Equatable {
         tempAvailability ?? {},
         tempVolunteerActivities ?? [],
         tempPhoneNumber ?? "",
+        tempAddress ?? "",
+        error ?? "",
       ];
 
   copywith({
     bool? editMode,
     UserData? user,
+    Organization? organization,
     String? userId,
     bool? isLoading,
     String? tempName,
@@ -70,10 +80,13 @@ class ProfileState extends Equatable {
     final Map<String, List<TimeRange>>? tempAvailability,
     List<String>? tempVolunteerActivities,
     String? tempPhoneNumber,
+    String? tempAddress,
+    String? error,
   }) {
     return ProfileState(
       editMode: editMode ?? this.editMode,
       user: user ?? this.user,
+      organization: organization ?? this.organization,
       userId: userId ?? this.userId,
       isLoading: isLoading ?? this.isLoading,
       tempName: tempName ?? this.tempName,
@@ -89,6 +102,8 @@ class ProfileState extends Equatable {
       tempVolunteerActivities:
           tempVolunteerActivities ?? this.tempVolunteerActivities,
       tempPhoneNumber: tempPhoneNumber ?? this.tempPhoneNumber,
+      tempAddress: tempAddress ?? this.tempAddress,
+      error: error ?? this.error,
     );
   }
 
@@ -97,6 +112,14 @@ class ProfileState extends Equatable {
       return 'Volunteer';
     } else {
       return 'Organization';
+    }
+  }
+
+  checkUserType(UserType userType) {
+    if (user?.userType == userType) {
+      return true;
+    } else {
+      return false;
     }
   }
 }
