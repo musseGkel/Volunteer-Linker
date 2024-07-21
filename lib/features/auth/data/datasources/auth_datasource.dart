@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:volunteer_linker/core/models/profile_info.dart';
 
 import '../../../../core/enums.dart';
 import '../../../../core/models/organization.dart';
@@ -35,12 +36,17 @@ class AuthDatasource {
 
     User? user = userCredential.user;
     if (user != null) {
+      await _firestore.collection('profileInfo').doc(user.uid).set(
+            ProfileInfo(
+              userType: userType,
+            ).toJson(),
+          );
       if (userType == UserType.volunteer) {
         await _firestore.collection('users').doc(user.uid).set(
               UserData(
                 id: user.uid,
                 name: name.trim(),
-                email: user.email!,
+                email: email,
                 username: "",
                 userType: userType,
                 profilePictureUrl: '',
@@ -48,14 +54,17 @@ class AuthDatasource {
                 skills: [],
                 availability: {},
                 volunteerActivities: [],
+                bio: "",
+                phoneNumber: "",
               ).toJson(),
             );
       } else if (userType == UserType.organization) {
-        await _firestore.collection("organization").doc(user.uid).set(
+        await _firestore.collection("organizations").doc(user.uid).set(
               Organization(
                 id: user.uid,
                 name: name.trim(),
-                email: user.email!,
+                email: email,
+                userName: "",
                 userType: userType,
                 contactNumber: '',
                 description: '',
