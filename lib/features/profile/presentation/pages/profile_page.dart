@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:volunteer_linker/constants/app_colors.dart';
 import 'package:volunteer_linker/features/profile/presentation/bloc/key_selection_bloc/keyword_selection_bloc.dart';
 import '../../../../core/enums.dart';
+import '../../../../core/widgets/common_button.dart';
+import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../bloc/profile_bloc/profile_bloc.dart';
 import '../bloc/profile_detail_bloc/profile_detail_bloc.dart';
 import '../widgets/profile_detail.dart';
@@ -253,8 +255,27 @@ class _ProfilePageState extends State<ProfilePage> {
                               editType: ProfileDetailEditType.textField,
                               isOnEditMode: profileState.editMode,
                             ),
+                            if (profileState
+                                .checkUserType(UserType.organization))
+                              ProfileDetail(
+                                title: 'Address',
+                                subtitle: profileState.tempAddress ?? "",
+                                onEditPressed: (value) {
+                                  BlocProvider.of<ProfileBloc>(context).add(
+                                    UpdateTempAddress(
+                                      state: profileState,
+                                      address: value,
+                                    ),
+                                  );
+                                },
+                                editType: ProfileDetailEditType.textField,
+                                isOnEditMode: profileState.editMode,
+                              ),
                             ProfileDetail(
-                              title: 'Bio',
+                              title: profileState
+                                      .checkUserType(UserType.organization)
+                                  ? 'Description'
+                                  : 'Bio',
                               subtitle: profileState.tempBio ?? "",
                               onEditPressed: (value) {
                                 BlocProvider.of<ProfileBloc>(context).add(
@@ -269,7 +290,10 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
 
                             ProfileDetail(
-                              title: 'Phone Number',
+                              title: profileState
+                                      .checkUserType(UserType.organization)
+                                  ? 'Contact Number'
+                                  : 'Phone Number',
                               subtitle: profileState.tempPhoneNumber ?? "",
                               onEditPressed: (value) {
                                 BlocProvider.of<ProfileBloc>(context).add(
@@ -287,18 +311,38 @@ class _ProfilePageState extends State<ProfilePage> {
                             //   profileDetailType: ProfileDetailType.interests,
                             //   editMode: profileState.editMode,
                             // ),
-                            ProfileDetailExpansionTile(
-                              profileDetailType: ProfileDetailType.skills,
-                              editMode: profileState.editMode,
-                            ),
-                            ProfileDetailExpansionTile(
-                              profileDetailType:
-                                  ProfileDetailType.volunteerActivities,
-                              editMode: profileState.editMode,
-                            ),
-                            ProfileDetailExpansionTile(
-                              profileDetailType: ProfileDetailType.availability,
-                              editMode: profileState.editMode,
+                            if (profileState.checkUserType(UserType.volunteer))
+                              ProfileDetailExpansionTile(
+                                profileDetailType: ProfileDetailType.skills,
+                                editMode: profileState.editMode,
+                              ),
+                            if (profileState.checkUserType(UserType.volunteer))
+                              ProfileDetailExpansionTile(
+                                profileDetailType:
+                                    ProfileDetailType.volunteerActivities,
+                                editMode: profileState.editMode,
+                              ),
+                            if (profileState.checkUserType(UserType.volunteer))
+                              ProfileDetailExpansionTile(
+                                profileDetailType:
+                                    ProfileDetailType.availability,
+                                editMode: profileState.editMode,
+                              ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 35, left: 60, right: 60, bottom: 60),
+                              child: CommonButton(
+                                backgroundColor: AppColors.primaryColor,
+                                borderColor: AppColors.primaryBorderColor,
+                                text: 'Logout',
+                                textColor: AppColors.primaryTextColor,
+                                onTap: () {
+                                  BlocProvider.of<AuthBloc>(context).add(
+                                    const LogoutEvent(),
+                                  );
+                                },
+                                contentColor: AppColors.primaryTextColor,
+                              ),
                             ),
                           ],
                         ),
