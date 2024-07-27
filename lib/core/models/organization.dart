@@ -53,7 +53,7 @@ class Organization {
       description: json['description'],
       address: json['address'],
       profilePictureUrl: json['profilePictureUrl'],
-      postedOpportunities: List<String>.from(json['postedOpportunities']) ?? [],
+      postedOpportunities: List<String>.from(json['postedOpportunities']),
     );
   }
 }
