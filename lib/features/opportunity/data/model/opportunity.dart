@@ -1,9 +1,11 @@
+import 'location_model.dart';
+
 class Opportunity {
   String id;
   String title;
   String description;
   String organizationId;
-  String location;
+  LocationModel location;
   DateTime date;
   DateTime time;
   int duration;
@@ -31,7 +33,7 @@ class Opportunity {
       title: json['title'],
       description: json['description'],
       organizationId: json['organizationId'],
-      location: json['location'],
+      location: LocationModel.fromJson(json['location']),
       date: DateTime.parse(json['date']),
       time: DateTime.parse(json['time']),
       duration: json['duration'],
@@ -47,7 +49,7 @@ class Opportunity {
       'title': title,
       'description': description,
       'organizationId': organizationId,
-      'location': location,
+      'location': location.toJson(),
       'date': date.toIso8601String(),
       'time': time.toIso8601String(),
       'duration': duration,
