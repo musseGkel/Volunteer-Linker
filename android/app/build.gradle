@@ -50,14 +50,19 @@ android {
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        buildConfigField "String", "GOOGLE_MAPS_API_KEY", "\"${project.GOOGLE_MAPS_API_KEY}\""
     }
 
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            
             signingConfig signingConfigs.debug
-        }
+            }
     }
 }
 
