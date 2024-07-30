@@ -3,19 +3,19 @@ part of 'opportunity_bloc.dart';
 class OpportunityState extends Equatable {
   final String tempTitle;
   final String tempDescription;
-  final List<String>? tempLocation;
-  final DateTime? tempDate;
-  final DateTime? tempTime;
-  final int? tempDuration;
+  final LatLng? selectedLocation;
+  final String? address;
+  final DateTime? startDateTime;
+  final DateTime? endDateTime;
   final List<String>? tempRequiredSkills;
 
   const OpportunityState({
     this.tempTitle = '',
     this.tempDescription = '',
-    this.tempLocation,
-    this.tempDate,
-    this.tempTime,
-    this.tempDuration,
+    this.selectedLocation,
+    this.address,
+    this.startDateTime,
+    this.endDateTime,
     this.tempRequiredSkills,
   });
 
@@ -23,10 +23,10 @@ class OpportunityState extends Equatable {
   List<Object> get props => [
         tempTitle,
         tempDescription,
-        tempLocation ?? [],
-        tempDate ?? DateTime(0),
-        tempTime ?? DateTime(0),
-        tempDuration ?? 0,
+        selectedLocation ?? const LatLng(0, 0),
+        address ?? '',
+        startDateTime ?? DateTime(0),
+        endDateTime ?? DateTime(0),
         tempRequiredSkills ?? [],
       ];
 

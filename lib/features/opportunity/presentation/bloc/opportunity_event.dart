@@ -66,7 +66,7 @@ class UpdateTempDescription extends OpportunityEvent {
 }
 
 class UpdateTempLocation extends OpportunityEvent {
-  final List<String> location;
+  final LatLng location;
   const UpdateTempLocation({
     required this.location,
   });
@@ -79,7 +79,71 @@ class UpdateTempLocation extends OpportunityEvent {
   @override
   Stream<OpportunityState> handle() async* {
     yield OpportunityState(
-      tempLocation: location,
+      selectedLocation: location,
     );
+  }
+}
+
+class UpdateTempAddress extends OpportunityEvent {
+  final String address;
+  const UpdateTempAddress({
+    required this.address,
+  });
+
+  @override
+  List<Object> get props => [
+        address,
+      ];
+
+  @override
+  Stream<OpportunityState> handle() async* {
+    yield OpportunityState(
+      address: address,
+    );
+  }
+}
+
+class UpdateTempDateTime extends OpportunityEvent {
+  final DateTime startDateTime;
+  final DateTime endDateTime;
+
+  const UpdateTempDateTime({
+    required this.endDateTime,
+    required this.startDateTime,
+  });
+
+  @override
+  List<Object> get props => [
+        startDateTime,
+        endDateTime,
+      ];
+
+  @override
+  Stream<OpportunityState> handle() async* {
+    yield OpportunityState(
+      startDateTime: startDateTime,
+      endDateTime: endDateTime,
+    );
+  }
+}
+
+class PostOpportunityEvent extends OpportunityEvent {
+  final OpportunityState state;
+
+  const PostOpportunityEvent({
+    required this.state,
+  });
+
+  @override
+  List<Object> get props => [
+        state,
+      ];
+
+  @override
+  Stream<OpportunityState> handle() async* {
+    // yield OpportunityState(
+    //   startDateTime: startDateTime,
+    //   endDateTime: endDateTime,
+    // );
   }
 }
