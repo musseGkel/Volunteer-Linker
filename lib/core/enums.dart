@@ -24,6 +24,14 @@ enum ProfileDetailType {
   volunteerActivities,
 }
 
+enum CurrentPage {
+  profile,
+  selectLocation,
+  login,
+  registration,
+  postOpportunity,
+}
+
 String enumToString(Object enumValue) {
   return enumValue.toString().split('.').last;
 }
