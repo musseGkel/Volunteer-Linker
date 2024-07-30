@@ -1,25 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:volunteer_linker/core/enums.dart';
 import 'package:volunteer_linker/core/widgets/common_textfield.dart';
+import 'package:volunteer_linker/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:volunteer_linker/features/opportunity/presentation/bloc/opportunity_bloc.dart';
+import '../../../../constants/app_colors.dart';
+import '../../../../core/widgets/common_button.dart';
 import '../../../profile/presentation/bloc/key_selection_bloc/keyword_selection_bloc.dart';
 import '../../../profile/presentation/widgets/keyword_selection.dart';
+import '../widgets/date_time_selection.dart';
 
 class PostOpportunity extends StatelessWidget {
   const PostOpportunity({super.key});
-
-  // final _formKey = GlobalKey<FormState>();
-
-  // DateTime _startDateTime = DateTime.now();
-  // final _dateController = TextEditingController();
-  // final _timeController = TextEditingController();
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   // _dateController.text = DateFormat('yyyy-MM-dd').format(_startDateTime);
-  //   // _timeController.text = DateFormat('HH:mm').format(_startDateTime);
-  // }
 
   @override
   Widget build(
@@ -93,77 +85,69 @@ class PostOpportunity extends StatelessWidget {
                       },
                     ),
                   ),
-                  /*  TextFormField(
-                      controller: _dateController,
-                      decoration: const InputDecoration(
-                          labelText: 'Start Date (YYYY-MM-DD)'),
-                      onTap: () async {
-                        FocusScope.of(context).requestFocus(FocusNode());
-                        DateTime? pickedDate = await showDatePicker(
-                          context: context,
-                          initialDate: _startDateTime,
-                          firstDate: DateTime(2000),
-                          lastDate: DateTime(2101),
-                        );
-                        if (pickedDate != null) {
-                          setState(() {
-                            _startDateTime = DateTime(
-                              pickedDate.year,
-                              pickedDate.month,
-                              pickedDate.day,
-                              _startDateTime.hour,
-                              _startDateTime.minute,
-                            );
-                            _dateController.text =
-                                DateFormat('yyyy-MM-dd').format(_startDateTime);
-                          });
-                        }
-                      },
-                      validator: (value) =>
-                          value!.isEmpty ? 'Please enter a date' : null,
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: 60,
+                      right: 60,
+                      bottom: 6,
+                      top: 6,
                     ),
-                    TextFormField(
-                      controller: _timeController,
-                      decoration:
-                          const InputDecoration(labelText: 'Start Time (HH:MM)'),
-                      onTap: () async {
-                        FocusScope.of(context).requestFocus(FocusNode());
-                        TimeOfDay? pickedTime = await showTimePicker(
-                          context: context,
-                          initialTime: TimeOfDay.fromDateTime(_startDateTime),
+                    child: CommonButton(
+                      borderRadius: BorderRadius.circular(8),
+                      fontSize: 14,
+                      backgroundColor: AppColors.primaryTextColor,
+                      borderColor: AppColors.primaryColor,
+                      text: "Select a Location",
+                      textColor: AppColors.secondaryTextColor,
+                      onTap: () {
+                        BlocProvider.of<AuthBloc>(context).add(
+                          const ChangePageEvent(
+                            CurrentPage.selectLocation,
+                          ),
                         );
-                        if (pickedTime != null) {
-                          setState(() {
-                            _startDateTime = DateTime(
-                              _startDateTime.year,
-                              _startDateTime.month,
-                              _startDateTime.day,
-                              pickedTime.hour,
-                              pickedTime.minute,
-                            );
-                            _timeController.text =
-                                DateFormat('HH:mm').format(_startDateTime);
-                          });
-                        }
                       },
-                      validator: (value) =>
-                          value!.isEmpty ? 'Please enter a time' : null,
+                      contentColor: AppColors.primaryTextColor,
                     ),
-                    // TextFormField(
-                    //   decoration:
-                    //       const InputDecoration(labelText: 'Duration (hours)'),
-                    //   keyboardType: TextInputType.number,
-                    //   onChanged: (value) => _duration = int.tryParse(value) ?? 0,
-                    //   validator: (value) =>
-                    //       value!.isEmpty ? 'Please enter a duration' : null,
-                    // ),
-                    const SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {}
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: DateTimeSelection(
+                      startDateTime: state.startDateTime,
+                      endDateTime: state.endDateTime,
+                      onDateTimeChanged: (startDateTime, endDateTime) {
+                        BlocProvider.of<OpportunityBloc>(context).add(
+                          UpdateTempDateTime(
+                            startDateTime: startDateTime,
+                            endDateTime: endDateTime,
+                          ),
+                        );
                       },
-                      child: const Text('Post Opportunity'),
-                    ),*/
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: 60,
+                      right: 60,
+                      bottom: 6,
+                      top: 6,
+                    ),
+                    child: CommonButton(
+                      borderRadius: BorderRadius.circular(8),
+                      fontSize: 14,
+                      backgroundColor: AppColors.primaryColor,
+                      borderColor: AppColors.primaryBorderColor,
+                      text: "Post Opportunity",
+                      textColor: AppColors.primaryTextColor,
+                      onTap: () {
+                        BlocProvider.of<OpportunityBloc>(context).add(
+                          PostOpportunityEvent(
+                            state: state,
+                          ),
+                        );
+                      },
+                      contentColor: AppColors.primaryTextColor,
+                    ),
+                  ),
                 ],
               ),
             ),
