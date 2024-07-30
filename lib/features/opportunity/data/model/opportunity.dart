@@ -6,9 +6,8 @@ class Opportunity {
   String description;
   String organizationId;
   LocationModel location;
-  DateTime date;
-  DateTime time;
-  int duration;
+  DateTime startDateTime;
+  DateTime endDateTime;
   List<String> requiredSkills;
   List<String> registeredUsers;
   List<String> attendees;
@@ -19,9 +18,8 @@ class Opportunity {
     required this.description,
     required this.organizationId,
     required this.location,
-    required this.date,
-    required this.time,
-    required this.duration,
+    required this.startDateTime,
+    required this.endDateTime,
     this.requiredSkills = const [],
     this.registeredUsers = const [],
     this.attendees = const [],
@@ -34,9 +32,8 @@ class Opportunity {
       description: json['description'],
       organizationId: json['organizationId'],
       location: LocationModel.fromJson(json['location']),
-      date: DateTime.parse(json['date']),
-      time: DateTime.parse(json['time']),
-      duration: json['duration'],
+      startDateTime: DateTime.parse(json['date']),
+      endDateTime: DateTime.parse(json['time']),
       requiredSkills: List<String>.from(json['requiredSkills']),
       registeredUsers: List<String>.from(json['registeredUsers']),
       attendees: List<String>.from(json['attendees']),
@@ -50,9 +47,8 @@ class Opportunity {
       'description': description,
       'organizationId': organizationId,
       'location': location.toJson(),
-      'date': date.toIso8601String(),
-      'time': time.toIso8601String(),
-      'duration': duration,
+      'date': startDateTime.toIso8601String(),
+      'time': endDateTime.toIso8601String(),
       'requiredSkills': requiredSkills,
       'registeredUsers': registeredUsers,
       'attendees': attendees,
