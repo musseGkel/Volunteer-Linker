@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:volunteer_linker/core/enums.dart';
+import 'package:volunteer_linker/features/map/presentation/pages/google_map_page.dart';
+import 'package:volunteer_linker/features/opportunity/presentation/bloc/opportunity_bloc.dart';
+import 'package:volunteer_linker/features/opportunity/presentation/pages/post_opportunity_page.dart';
 
 import '../../../profile/presentation/bloc/profile_bloc/profile_bloc.dart';
 import '../../../profile/presentation/pages/profile_page.dart';
@@ -19,14 +23,27 @@ class RoutingPage extends StatelessWidget {
         BlocProvider<AuthBloc>(
           create: (context) => AuthBloc(),
         ),
+        BlocProvider<OpportunityBloc>(
+          create: (context) => OpportunityBloc(),
+        ),
       ],
       child: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {
-          if (state.user != null) {
-            return const ProfilePage();
-          } else {
+          if (state.currentPage == CurrentPage.postOpportunity) {
+            return const PostOpportunity();
+          } else if (state.currentPage == CurrentPage.selectLocation) {
+            return GoogleMapPage();
+          } else if (state.currentPage == CurrentPage.login) {
             return const LoginScreen();
+          } else if (state.currentPage == CurrentPage.profile) {
+            const ProfilePage();
           }
+          return LoginScreen();
+          // if (state.user != null) {
+          //   return const ProfilePage();
+          // } else {
+          //   return const LoginScreen();
+          // }
         },
       ),
     );

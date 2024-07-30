@@ -180,3 +180,13 @@ class AuthChangesEvent extends AuthEvent {
     );
   }
 }
+
+class ChangePageEvent extends AuthEvent {
+  final CurrentPage changePage;
+  const ChangePageEvent(this.changePage);
+
+  @override
+  Stream<AuthState> handle() async* {
+    yield AuthState(currentPage: changePage);
+  }
+}

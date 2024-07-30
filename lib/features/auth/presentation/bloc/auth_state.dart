@@ -6,6 +6,7 @@ class AuthState extends Equatable {
   final bool isLoading;
   final AuthMode authMode;
   final UserType userType;
+  final CurrentPage currentPage;
 
   const AuthState({
     this.userType = UserType.volunteer,
@@ -13,6 +14,7 @@ class AuthState extends Equatable {
     this.errorMessage = '',
     this.isLoading = false,
     this.authMode = AuthMode.login,
+    this.currentPage = CurrentPage.postOpportunity,
   });
 
   @override
@@ -22,6 +24,7 @@ class AuthState extends Equatable {
         isLoading,
         authMode,
         userType,
+        currentPage,
       ];
 
   copyWith({
@@ -30,6 +33,7 @@ class AuthState extends Equatable {
     bool? isLoading,
     AuthMode? authMode,
     UserType? userType,
+    CurrentPage? currentPage,
   }) {
     return AuthState(
       user: user ?? this.user,
@@ -37,6 +41,7 @@ class AuthState extends Equatable {
       isLoading: isLoading ?? this.isLoading,
       authMode: authMode ?? this.authMode,
       userType: userType ?? this.userType,
+      currentPage: currentPage ?? this.currentPage,
     );
   }
 
