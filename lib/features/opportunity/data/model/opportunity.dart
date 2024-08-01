@@ -1,7 +1,7 @@
 import 'location_model.dart';
 
 class Opportunity {
-  String id;
+  String? id;
   String title;
   String description;
   String organizationId;
@@ -13,7 +13,7 @@ class Opportunity {
   List<String> attendees;
 
   Opportunity({
-    required this.id,
+    this.id,
     required this.title,
     required this.description,
     required this.organizationId,
