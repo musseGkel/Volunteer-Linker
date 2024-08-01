@@ -60,7 +60,6 @@ class _NavigationPageState extends State<NavigationPage> {
 
       setState(() {});
     } else {
-      print("Error: ${result.errorMessage}");
     }
   }
 
