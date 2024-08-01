@@ -33,6 +33,7 @@ class LoginEvent extends AuthEvent {
       (failure) => AuthState(errorMessage: failure.message),
       (success) => AuthState(
         user: success,
+        currentPage: CurrentPage.postOpportunity,
       ),
     );
   }
@@ -129,6 +130,7 @@ class RegisterEvent extends AuthEvent {
         (success) => AuthState(
           user: success,
           authMode: AuthMode.register,
+          currentPage: CurrentPage.postOpportunity,
         ),
       );
     }
@@ -169,9 +171,8 @@ class ToggleLoginEvent extends AuthEvent {
 
 class AuthChangesEvent extends AuthEvent {
   final User? user;
-  const AuthChangesEvent(
-    this.user,
-  );
+
+  const AuthChangesEvent(this.user);
 
   @override
   Stream<AuthState> handle() async* {
@@ -183,10 +184,17 @@ class AuthChangesEvent extends AuthEvent {
 
 class ChangePageEvent extends AuthEvent {
   final CurrentPage changePage;
-  const ChangePageEvent(this.changePage);
+  final AuthState state;
+  const ChangePageEvent({
+    required this.changePage,
+    required this.state,
+  });
 
   @override
   Stream<AuthState> handle() async* {
-    yield AuthState(currentPage: changePage);
+    AuthState updatedState = state.copyWith(
+      currentPage: changePage,
+    );
+    yield updatedState;
   }
 }
