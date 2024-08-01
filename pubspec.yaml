@@ -26,6 +26,7 @@ dependencies:
   geolocator: ^7.7.0
   geocoding: ^3.0.0
   flutter_dotenv: ^5.1.0
+  uuid: ^4.4.2
 
 dev_dependencies:
   flutter_test:
