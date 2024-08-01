@@ -28,129 +28,159 @@ class PostOpportunity extends StatelessWidget {
           },
         ),
       ],
-      child: BlocBuilder<OpportunityBloc, OpportunityState>(
-        builder: (
-          context,
-          state,
-        ) {
-          return Scaffold(
-            appBar: AppBar(
-              title: const Text(
-                'Post an Opportunity',
-              ),
-              centerTitle: true,
-            ),
-            body: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: ListView(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: CommonTextField(
-                      label: "Title",
-                      onChanged: (value) {
-                        BlocProvider.of<OpportunityBloc>(context).add(
-                          UpdateTempTitle(
-                            title: value,
-                          ),
-                        );
-                      },
-                    ),
+      child: BlocBuilder<AuthBloc, AuthState>(
+        builder: (context, authState) {
+          return BlocBuilder<OpportunityBloc, OpportunityState>(
+            builder: (
+              context,
+              state,
+            ) {
+              return Scaffold(
+                appBar: AppBar(
+                  title: const Text(
+                    'Post an Opportunity',
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: CommonTextField(
-                      label: "Description",
-                      onChanged: (value) {
-                        BlocProvider.of<OpportunityBloc>(context).add(
-                          UpdateTempDescription(
-                            description: value,
+                  centerTitle: true,
+                ),
+                body: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: ListView(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: CommonTextField(
+                          label: "Title",
+                          onChanged: (value) {
+                            BlocProvider.of<OpportunityBloc>(context).add(
+                              UpdateTempTitle(
+                                state: state,
+                                title: value,
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: CommonTextField(
+                          label: "Description",
+                          onChanged: (value) {
+                            BlocProvider.of<OpportunityBloc>(context).add(
+                              UpdateTempDescription(
+                                state: state,
+                                description: value,
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: KeywordsSelection(
+                          keywords: state.skills(),
+                          title: "Required Skills",
+                          canEdit: true,
+                          onSave: (value) {
+                            BlocProvider.of<OpportunityBloc>(context).add(
+                              UpdateTempRequiredSkills(
+                                state: state,
+                                requiredSkills: value,
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          left: 60,
+                          right: 60,
+                          bottom: 6,
+                          top: 6,
+                        ),
+                        child: CommonButton(
+                          borderRadius: BorderRadius.circular(8),
+                          fontSize: 14,
+                          backgroundColor: AppColors.primaryTextColor,
+                          borderColor: AppColors.primaryColor,
+                          text: "Select a Location",
+                          textColor: AppColors.secondaryTextColor,
+                          onTap: () {
+                            BlocProvider.of<AuthBloc>(context).add(
+                              ChangePageEvent(
+                                changePage: CurrentPage.selectLocation,
+                                state: authState,
+                              ),
+                            );
+                          },
+                          contentColor: AppColors.primaryTextColor,
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.center,
+                        child: DateTimeSelection(
+                          startDateTime: state.startDateTime,
+                          endDateTime: state.endDateTime,
+                          onDateTimeChanged: (startDateTime, endDateTime) {
+                            BlocProvider.of<OpportunityBloc>(context).add(
+                              UpdateTempDateTime(
+                                state: state,
+                                startDateTime: startDateTime,
+                                endDateTime: endDateTime,
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      if (state.errorMesssage.isNotEmpty)
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            left: 60,
+                            right: 60,
+                            bottom: 6,
+                            top: 6,
                           ),
-                        );
-                      },
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: KeywordsSelection(
-                      keywords: state.skills(),
-                      title: "Required Skills",
-                      canEdit: true,
-                      onSave: (value) {
-                        BlocProvider.of<OpportunityBloc>(context).add(
-                          UpdateTempRequiredSkills(
-                            requiredSkills: value,
+                          child: Text(
+                            state.errorMesssage,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              color: AppColors.red,
+                              fontSize: 14,
+                            ),
                           ),
-                        );
-                      },
-                    ),
+                        ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          left: 60,
+                          right: 60,
+                          bottom: 6,
+                          top: 6,
+                        ),
+                        child: CommonButton(
+                          borderRadius: BorderRadius.circular(8),
+                          fontSize: 14,
+                          backgroundColor: AppColors.primaryColor,
+                          borderColor: AppColors.primaryBorderColor,
+                          text: "Post Opportunity",
+                          textColor: AppColors.primaryTextColor,
+                          onTap: () {
+                            BlocProvider.of<OpportunityBloc>(context).add(
+                              PostOpportunityEvent(
+                                state: state,
+                                organizationId:
+                                    context.read<AuthBloc>().state.user?.uid ??
+                                        "",
+                                context: context,
+                              ),
+                            );
+                          },
+                          contentColor: AppColors.primaryTextColor,
+                        ),
+                      ),
+                    ],
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      left: 60,
-                      right: 60,
-                      bottom: 6,
-                      top: 6,
-                    ),
-                    child: CommonButton(
-                      borderRadius: BorderRadius.circular(8),
-                      fontSize: 14,
-                      backgroundColor: AppColors.primaryTextColor,
-                      borderColor: AppColors.primaryColor,
-                      text: "Select a Location",
-                      textColor: AppColors.secondaryTextColor,
-                      onTap: () {
-                        BlocProvider.of<AuthBloc>(context).add(
-                          const ChangePageEvent(
-                            CurrentPage.selectLocation,
-                          ),
-                        );
-                      },
-                      contentColor: AppColors.primaryTextColor,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: DateTimeSelection(
-                      startDateTime: state.startDateTime,
-                      endDateTime: state.endDateTime,
-                      onDateTimeChanged: (startDateTime, endDateTime) {
-                        BlocProvider.of<OpportunityBloc>(context).add(
-                          UpdateTempDateTime(
-                            startDateTime: startDateTime,
-                            endDateTime: endDateTime,
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      left: 60,
-                      right: 60,
-                      bottom: 6,
-                      top: 6,
-                    ),
-                    child: CommonButton(
-                      borderRadius: BorderRadius.circular(8),
-                      fontSize: 14,
-                      backgroundColor: AppColors.primaryColor,
-                      borderColor: AppColors.primaryBorderColor,
-                      text: "Post Opportunity",
-                      textColor: AppColors.primaryTextColor,
-                      onTap: () {
-                        BlocProvider.of<OpportunityBloc>(context).add(
-                          PostOpportunityEvent(
-                            state: state,
-                          ),
-                        );
-                      },
-                      contentColor: AppColors.primaryTextColor,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+                ),
+              );
+            },
           );
         },
       ),
