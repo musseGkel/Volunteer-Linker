@@ -5,13 +5,16 @@ import 'package:volunteer_linker/features/map/presentation/pages/google_map_page
 import 'package:volunteer_linker/features/opportunity/presentation/bloc/opportunity_bloc.dart';
 import 'package:volunteer_linker/features/opportunity/presentation/pages/post_opportunity_page.dart';
 
+import '../../../home_page/presentation/pages/home_page.dart';
 import '../../../profile/presentation/bloc/profile_bloc/profile_bloc.dart';
 import '../../../profile/presentation/pages/profile_page.dart';
 import '../bloc/auth_bloc.dart';
 import 'login_page.dart';
 
 class RoutingPage extends StatelessWidget {
-  const RoutingPage({super.key});
+  const RoutingPage({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -29,21 +32,20 @@ class RoutingPage extends StatelessWidget {
       ],
       child: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {
-          if (state.currentPage == CurrentPage.postOpportunity) {
-            return const PostOpportunity();
-          } else if (state.currentPage == CurrentPage.selectLocation) {
-            return GoogleMapPage();
-          } else if (state.currentPage == CurrentPage.login) {
-            return const LoginScreen();
-          } else if (state.currentPage == CurrentPage.profile) {
-            const ProfilePage();
+          if (state.user != null) {
+            if (state.currentPage == CurrentPage.postOpportunity) {
+              return const PostOpportunity();
+            } else if (state.currentPage == CurrentPage.selectLocation) {
+              return GoogleMapPage();
+            } else if (state.currentPage == CurrentPage.login) {
+              return const LoginScreen();
+            } else if (state.currentPage == CurrentPage.profile) {
+              return const ProfilePage();
+            } else if (state.currentPage == CurrentPage.home) {
+              return const HomePage();
+            }
           }
-          return LoginScreen();
-          // if (state.user != null) {
-          //   return const ProfilePage();
-          // } else {
-          //   return const LoginScreen();
-          // }
+          return const LoginScreen();
         },
       ),
     );

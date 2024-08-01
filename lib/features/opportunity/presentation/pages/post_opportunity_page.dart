@@ -30,11 +30,28 @@ class PostOpportunity extends StatelessWidget {
       ],
       child: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, authState) {
-          return BlocBuilder<OpportunityBloc, OpportunityState>(
-            builder: (
-              context,
-              state,
-            ) {
+          return BlocConsumer<OpportunityBloc, OpportunityState>(
+            listener: (context, state) {
+              if (state.opportunityPosted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text(
+                      'Opportunity posted successfully!',
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                );
+                BlocProvider.of<AuthBloc>(
+                  context,
+                ).add(
+                  ChangePageEvent(
+                    state: authState,
+                    changePage: CurrentPage.home,
+                  ),
+                );
+              }
+            },
+            builder: (context, state) {
               return Scaffold(
                 appBar: AppBar(
                   title: const Text(
@@ -162,6 +179,7 @@ class PostOpportunity extends StatelessWidget {
                           borderColor: AppColors.primaryBorderColor,
                           text: "Post Opportunity",
                           textColor: AppColors.primaryTextColor,
+                          isLoading: state.isLoading,
                           onTap: () {
                             BlocProvider.of<OpportunityBloc>(context).add(
                               PostOpportunityEvent(
@@ -170,6 +188,7 @@ class PostOpportunity extends StatelessWidget {
                                     context.read<AuthBloc>().state.user?.uid ??
                                         "",
                                 context: context,
+                                authState: authState,
                               ),
                             );
                           },
