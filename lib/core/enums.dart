@@ -30,6 +30,7 @@ enum CurrentPage {
   login,
   registration,
   postOpportunity,
+  home,
 }
 
 String enumToString(Object enumValue) {
