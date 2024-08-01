@@ -8,6 +8,8 @@ class OpportunityState extends Equatable {
   final DateTime? startDateTime;
   final DateTime? endDateTime;
   final List<String>? tempRequiredSkills;
+  final bool isLoading;
+  final String errorMesssage;
 
   const OpportunityState({
     this.tempTitle = '',
@@ -17,6 +19,8 @@ class OpportunityState extends Equatable {
     this.startDateTime,
     this.endDateTime,
     this.tempRequiredSkills,
+    this.isLoading = false,
+    this.errorMesssage = '',
   });
 
   @override
@@ -28,9 +32,35 @@ class OpportunityState extends Equatable {
         startDateTime ?? DateTime(0),
         endDateTime ?? DateTime(0),
         tempRequiredSkills ?? [],
+        isLoading,
+        errorMesssage,
       ];
 
   List<String> skills() {
     return AppKeywordConstants.skills;
+  }
+
+  copyWith({
+    String? tempTitle,
+    String? tempDescription,
+    LatLng? selectedLocation,
+    String? address,
+    DateTime? startDateTime,
+    DateTime? endDateTime,
+    List<String>? tempRequiredSkills,
+    bool? isLoading,
+    String? errorMesssage,
+  }) {
+    return OpportunityState(
+      tempTitle: tempTitle ?? this.tempTitle,
+      tempDescription: tempDescription ?? this.tempDescription,
+      selectedLocation: selectedLocation ?? this.selectedLocation,
+      address: address ?? this.address,
+      startDateTime: startDateTime ?? this.startDateTime,
+      endDateTime: endDateTime ?? this.endDateTime,
+      tempRequiredSkills: tempRequiredSkills ?? this.tempRequiredSkills,
+      isLoading: isLoading ?? this.isLoading,
+      errorMesssage: errorMesssage ?? this.errorMesssage,
+    );
   }
 }
