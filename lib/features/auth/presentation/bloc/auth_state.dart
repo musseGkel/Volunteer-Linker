@@ -14,7 +14,7 @@ class AuthState extends Equatable {
     this.errorMessage = '',
     this.isLoading = false,
     this.authMode = AuthMode.login,
-    this.currentPage = CurrentPage.postOpportunity,
+    this.currentPage = CurrentPage.home,
   });
 
   @override
