@@ -194,6 +194,7 @@ class PostOpportunityEvent extends OpportunityEvent {
           startDateTime: state.startDateTime ?? DateTime.now(),
           endDateTime: state.endDateTime ?? DateTime.now(),
           requiredSkills: state.tempRequiredSkills ?? [],
+          createdAt: DateTime.now(),
         ),
       );
       if (response.statusCode != 200) {

@@ -11,6 +11,8 @@ class Opportunity {
   List<String> requiredSkills;
   List<String> registeredUsers;
   List<String> attendees;
+  DateTime? createdAt;
+  String imageUrl;
 
   Opportunity({
     this.id,
@@ -23,6 +25,8 @@ class Opportunity {
     this.requiredSkills = const [],
     this.registeredUsers = const [],
     this.attendees = const [],
+    this.createdAt,
+    this.imageUrl = '',
   });
 
   factory Opportunity.fromJson(Map<String, dynamic> json) {
@@ -37,6 +41,9 @@ class Opportunity {
       requiredSkills: List<String>.from(json['requiredSkills']),
       registeredUsers: List<String>.from(json['registeredUsers']),
       attendees: List<String>.from(json['attendees']),
+      createdAt:
+          json['createdAt'] != null ? DateTime.parse(json['createdAt']) : null,
+      imageUrl: json['imageUrl'] ?? '',
     );
   }
 
@@ -52,6 +59,8 @@ class Opportunity {
       'requiredSkills': requiredSkills,
       'registeredUsers': registeredUsers,
       'attendees': attendees,
+      'createdAt': createdAt?.toIso8601String(),
+      'imageUrl': imageUrl,
     };
   }
 }
