@@ -148,16 +148,17 @@ class PostOpportunityEvent extends OpportunityEvent {
   final OpportunityState state;
   final String organizationId;
   final BuildContext context;
+  final AuthState authState;
 
   const PostOpportunityEvent({
     required this.state,
     required this.organizationId,
     required this.context,
+    required this.authState,
   });
 
   @override
   Stream<OpportunityState> handle() async* {
-  
     OpportunityState updateState = state.copyWith(
       isLoading: true,
     );
@@ -203,18 +204,10 @@ class PostOpportunityEvent extends OpportunityEvent {
         yield updateState;
         return;
       } else {
-        // ignore: use_build_context_synchronously
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
-              'Opportunity posted successfully!',
-              textAlign: TextAlign.center,
-            ),
-          ),
-        );
-        updateState = state.copyWith(
-          isLoading: false,
-        );
+        updateState = state.copyWith(isLoading: false, opportunityPosted: true);
+        yield updateState;
+
+        updateState = state.copyWith(opportunityPosted: false);
         yield updateState;
       }
     }

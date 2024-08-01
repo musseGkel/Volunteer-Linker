@@ -10,6 +10,7 @@ class OpportunityState extends Equatable {
   final List<String>? tempRequiredSkills;
   final bool isLoading;
   final String errorMesssage;
+  final bool opportunityPosted;
 
   const OpportunityState({
     this.tempTitle = '',
@@ -21,6 +22,7 @@ class OpportunityState extends Equatable {
     this.tempRequiredSkills,
     this.isLoading = false,
     this.errorMesssage = '',
+    this.opportunityPosted = false,
   });
 
   @override
@@ -34,6 +36,7 @@ class OpportunityState extends Equatable {
         tempRequiredSkills ?? [],
         isLoading,
         errorMesssage,
+        opportunityPosted,
       ];
 
   List<String> skills() {
@@ -50,6 +53,7 @@ class OpportunityState extends Equatable {
     List<String>? tempRequiredSkills,
     bool? isLoading,
     String? errorMesssage,
+    bool? opportunityPosted,
   }) {
     return OpportunityState(
       tempTitle: tempTitle ?? this.tempTitle,
@@ -61,6 +65,7 @@ class OpportunityState extends Equatable {
       tempRequiredSkills: tempRequiredSkills ?? this.tempRequiredSkills,
       isLoading: isLoading ?? this.isLoading,
       errorMesssage: errorMesssage ?? this.errorMesssage,
+      opportunityPosted: opportunityPosted ?? this.opportunityPosted,
     );
   }
 }

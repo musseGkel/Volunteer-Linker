@@ -1,13 +1,16 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:uuid/uuid.dart';
 import 'package:volunteer_linker/features/opportunity/data/model/location_model.dart';
 
 import '../../../../constants/keyword_constants.dart';
+import '../../../../core/enums.dart';
 import '../../../../services/api_reponse.dart';
+import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../data/datasource/opportunity_datasource.dart';
 import '../../data/model/opportunity.dart';
 import '../../data/repository/opportunity_repository_impl.dart';
