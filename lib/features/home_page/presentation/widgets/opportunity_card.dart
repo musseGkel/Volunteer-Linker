@@ -6,7 +6,7 @@ import '../bloc/home_page_bloc.dart';
 
 class OpportunityCard extends StatelessWidget {
   final String organizationName;
-  final DateTime timeAgo;
+  final DateTime createdAt;
   final String organizationLogoUrl;
   final String imageUrl;
   final String description;
@@ -17,7 +17,7 @@ class OpportunityCard extends StatelessWidget {
   const OpportunityCard({
     super.key,
     required this.organizationName,
-    required this.timeAgo,
+    required this.createdAt,
     required this.imageUrl,
     required this.description,
     required this.participants,
@@ -57,7 +57,7 @@ class OpportunityCard extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          state.getTimeAgo(timeAgo),
+                          state.getTimeAgo(createdAt),
                           style: const TextStyle(
                             color: AppColors.greyColor,
                             fontSize: 12,
@@ -98,7 +98,10 @@ class OpportunityCard extends StatelessWidget {
                       width: 5,
                     ),
                     Text(
-                      address,
+                      address.length > 30
+                          ? '${address.substring(0, 35)}...'
+                          : address,
+                      overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
                         fontSize: 14,
                         color: AppColors.secondaryTextColor,
