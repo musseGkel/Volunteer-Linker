@@ -147,14 +147,14 @@ class UpdateTempDateTime extends OpportunityEvent {
 class PostOpportunityEvent extends OpportunityEvent {
   final OpportunityState state;
   final String organizationId;
-  final BuildContext context;
   final AuthState authState;
+  final File? image;
 
   const PostOpportunityEvent({
     required this.state,
     required this.organizationId,
-    required this.context,
     required this.authState,
+    this.image,
   });
 
   @override
@@ -162,6 +162,30 @@ class PostOpportunityEvent extends OpportunityEvent {
     OpportunityState updateState = state.copyWith(
       isLoading: true,
     );
+    yield updateState;
+
+    ApiResponse imageStorageResponse;
+    String uploadedImageUrl = "";
+
+    if (image != null) {
+      imageStorageResponse = await StoreImageUsecase(
+        ImageRepoImpl(
+          dataSource: ImageDataSource(),
+        ),
+      ).call(
+        image!,
+      );
+      if (imageStorageResponse.statusCode == 200) {
+        uploadedImageUrl = imageStorageResponse.body;
+      } else {
+        updateState = state.copyWith(
+          isLoading: false,
+        );
+        yield updateState;
+        return;
+      }
+    }
+
     if (state.tempTitle.isEmpty ||
         state.selectedLocation == null ||
         state.address == null ||
@@ -195,6 +219,7 @@ class PostOpportunityEvent extends OpportunityEvent {
           endDateTime: state.endDateTime ?? DateTime.now(),
           requiredSkills: state.tempRequiredSkills ?? [],
           createdAt: DateTime.now(),
+          imageUrl: uploadedImageUrl,
         ),
       );
       if (response.statusCode != 200) {

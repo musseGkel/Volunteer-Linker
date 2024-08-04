@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:volunteer_linker/core/models/user_data.dart';
 import 'package:volunteer_linker/features/image/data/repository/image_repo_impl.dart';
 import 'package:volunteer_linker/features/profile/data/datasource/profile_datasource.dart';
