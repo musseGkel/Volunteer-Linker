@@ -149,12 +149,16 @@ class PostOpportunityEvent extends OpportunityEvent {
   final String organizationId;
   final AuthState authState;
   final File? image;
+  final String organizationName;
+  final String organizationLogoUrl;
 
   const PostOpportunityEvent({
     required this.state,
     required this.organizationId,
     required this.authState,
     this.image,
+    required this.organizationName,
+    required this.organizationLogoUrl,
   });
 
   @override
@@ -220,6 +224,8 @@ class PostOpportunityEvent extends OpportunityEvent {
           requiredSkills: state.tempRequiredSkills ?? [],
           createdAt: DateTime.now(),
           imageUrl: uploadedImageUrl,
+          organizationLogoUrl: organizationLogoUrl,
+          organizationName: organizationName,
         ),
       );
       if (response.statusCode != 200) {
