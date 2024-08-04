@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:volunteer_linker/constants/app_colors.dart';
@@ -191,8 +192,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                                 ? CircleAvatar(
                                                     radius: 50,
                                                     backgroundImage:
-                                                        NetworkImage(profileState
-                                                            .tempProfilePictureUrl!),
+                                                        CachedNetworkImageProvider(
+                                                            profileState
+                                                                .tempProfilePictureUrl!),
                                                   )
                                                 : const CircleAvatar(
                                                     radius: 50,
