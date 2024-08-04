@@ -9,6 +9,7 @@ import 'package:volunteer_linker/features/opportunity/presentation/bloc/opportun
 import '../../../../constants/app_colors.dart';
 import '../../../../core/widgets/common_button.dart';
 import '../../../home_page/presentation/bloc/image_picker/image_picker_bloc.dart';
+import '../../../home_page/presentation/widgets/custom_drawer.dart';
 import '../../../profile/presentation/bloc/key_selection_bloc/keyword_selection_bloc.dart';
 import '../../../profile/presentation/bloc/profile_bloc/profile_bloc.dart';
 import '../../../profile/presentation/widgets/keyword_selection.dart';
@@ -74,6 +75,13 @@ class _PostOpportunityState extends State<PostOpportunity> {
     );
   }
 
+  void _onItemTapped(CurrentPage currentPage, AuthState authState) {
+    BlocProvider.of<AuthBloc>(context)
+        .add(ChangePageEvent(changePage: currentPage, state: authState));
+
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(
     BuildContext context,
@@ -121,11 +129,22 @@ class _PostOpportunityState extends State<PostOpportunity> {
                   return BlocBuilder<ProfileBloc, ProfileState>(
                     builder: (context, profileState) {
                       return Scaffold(
+                        drawer: CustomDrawer(
+                          authState: authState,
+                          onItemTapped: _onItemTapped,
+                        ),
                         appBar: AppBar(
                           title: const Text(
                             'Post an Opportunity',
                           ),
                           centerTitle: true,
+                          leading: Builder(
+                            builder: (context) => IconButton(
+                              icon: const Icon(Icons.menu),
+                              onPressed: () =>
+                                  Scaffold.of(context).openDrawer(),
+                            ),
+                          ),
                         ),
                         body: Padding(
                           padding: const EdgeInsets.all(16.0),
