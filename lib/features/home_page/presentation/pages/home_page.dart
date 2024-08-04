@@ -14,7 +14,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  static const _pageSize = 10;
   final PagingController<int, Opportunity> _pagingController =
       PagingController(firstPageKey: 0);
 
@@ -41,46 +40,43 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomePageBloc, HomePageState>(
-      builder: (context, state) {
-        switch (state.status) {
-          case PostStatus.failure:
-            return const Center(child: Text('Failed to fetch posts'));
-          case PostStatus.success:
-            if (state.opportunities.isEmpty) {
-              return const Center(child: Text('No posts available'));
-            }
-            _pagingController.value = PagingState(
-              itemList: state.opportunities,
-              error: null,
-              nextPageKey:
-                  state.hasReachedMax ? null : state.opportunities.length,
-            );
-            return PagedListView<int, Opportunity>(
-              pagingController: _pagingController,
-              builderDelegate: PagedChildBuilderDelegate<Opportunity>(
-                itemBuilder: (context, item, index) => OpportunityCard(
-                  organizationName: "item.name",
-                  createdAt: item.createdAt ?? DateTime.now(),
-                  address: item.location.readableAddress,
-                  imageUrl:
-                      'https://images.pexels.com/photos/214574/pexels-photo-214574.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-                  description:
-                      'https://images.pexels.com/photos/214574/pexels-photo-214574.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-                  organizationLogoUrl:
-                      'https://images.pexels.com/photos/214574/pexels-photo-214574.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-                  participants: item.registeredUsers.length,
-                  onApply: () {
-                    print('Apply button pressed');
-                  },
+    return Scaffold(
+      body: BlocBuilder<HomePageBloc, HomePageState>(
+        builder: (context, state) {
+          switch (state.status) {
+            case PostStatus.failure:
+              return const Center(child: Text('Failed to fetch posts'));
+            case PostStatus.success:
+              if (state.opportunities.isEmpty) {
+                return const Center(child: Text('No posts available'));
+              }
+              _pagingController.value = PagingState(
+                itemList: state.opportunities,
+                error: null,
+                nextPageKey:
+                    state.hasReachedMax ? null : state.opportunities.length,
+              );
+              return PagedListView<int, Opportunity>(
+                pagingController: _pagingController,
+                builderDelegate: PagedChildBuilderDelegate<Opportunity>(
+                  itemBuilder: (context, item, index) => OpportunityCard(
+                    organizationName: item.organizationName,
+                    createdAt: item.createdAt ?? DateTime.now(),
+                    address: item.location.readableAddress,
+                    imageUrl: item.imageUrl,
+                    description: item.description,
+                    organizationLogoUrl: item.organizationLogoUrl,
+                    participants: item.registeredUsers.length,
+                    onApply: () {},
+                  ),
                 ),
-              ),
-            );
-          case PostStatus.initial:
-          default:
-            return const Center(child: CircularProgressIndicator());
-        }
-      },
+              );
+            case PostStatus.initial:
+            default:
+              return const Center(child: CircularProgressIndicator());
+          }
+        },
+      ),
     );
   }
 }

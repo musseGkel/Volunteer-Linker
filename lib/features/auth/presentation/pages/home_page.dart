@@ -12,6 +12,7 @@ class HomePage extends StatelessWidget {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
         return Scaffold(
+          backgroundColor: AppColors.backgroundColor,
           body: Container(
             height: double.infinity,
             width: double.infinity,
