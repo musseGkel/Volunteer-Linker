@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:volunteer_linker/constants/app_colors.dart';
@@ -114,6 +116,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       UpdateProfile(
                                         state: profileState,
                                         id: profileState.userId,
+                                        image: imagePickerState.image,
                                       ),
                                     );
                                   },
@@ -176,31 +179,45 @@ class _ProfilePageState extends State<ProfilePage> {
                                         return state.image != null
                                             ? CircleAvatar(
                                                 radius: 50,
-                                                backgroundImage: state.image,
+                                                backgroundImage: FileImage(
+                                                  File(state.image!.path),
+                                                ),
                                               )
-                                            : const CircleAvatar(
-                                                radius: 50,
-                                                child: Icon(Icons.person,
-                                                    size: 50),
-                                              );
+                                            : profileState.tempProfilePictureUrl !=
+                                                        null &&
+                                                    profileState
+                                                        .tempProfilePictureUrl!
+                                                        .isNotEmpty
+                                                ? CircleAvatar(
+                                                    radius: 50,
+                                                    backgroundImage:
+                                                        NetworkImage(profileState
+                                                            .tempProfilePictureUrl!),
+                                                  )
+                                                : const CircleAvatar(
+                                                    radius: 50,
+                                                    child: Icon(Icons.person,
+                                                        size: 50),
+                                                  );
                                       },
                                     ),
-                                    Positioned(
-                                      bottom: 0,
-                                      right: 0,
-                                      child: IconButton(
-                                        icon: const Icon(
-                                          Icons.edit,
-                                          color: Colors.blue,
+                                    if (profileState.editMode)
+                                      Positioned(
+                                        bottom: 60,
+                                        right: 0,
+                                        child: IconButton(
+                                          icon: const Icon(
+                                            Icons.edit,
+                                            color: AppColors.primaryColor,
+                                          ),
+                                          onPressed: () {
+                                            _showImageSourceActionSheet(
+                                              imagePickerContext,
+                                              imagePickerState,
+                                            );
+                                          },
                                         ),
-                                        onPressed: () {
-                                          _showImageSourceActionSheet(
-                                            imagePickerContext,
-                                            imagePickerState,
-                                          );
-                                        },
                                       ),
-                                    ),
                                   ],
                                 ),
                                 const SizedBox(height: 10),
