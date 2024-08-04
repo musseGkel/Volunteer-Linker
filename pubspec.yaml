@@ -28,6 +28,7 @@ dependencies:
   flutter_dotenv: ^5.1.0
   uuid: ^4.4.2
   infinite_scroll_pagination: ^3.1.0
+  image_picker: ^0.8.9
 
 dev_dependencies:
   flutter_test:
