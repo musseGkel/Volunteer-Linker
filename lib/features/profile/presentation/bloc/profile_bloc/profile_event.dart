@@ -31,10 +31,12 @@ class ProfileEditModeChanged extends ProfileEvent {
 class UpdateProfile extends ProfileEvent {
   final String id;
   final ProfileState state;
+  final File? image;
 
   const UpdateProfile({
     required this.state,
     required this.id,
+    this.image,
   });
 
   @override
@@ -43,6 +45,32 @@ class UpdateProfile extends ProfileEvent {
       isLoading: true,
     );
     yield updateState;
+
+    ApiResponse imageStorageResponse;
+    String uploadedImageUrl = "";
+
+    if (image != null) {
+      imageStorageResponse = await StoreImageUsecase(
+        ImageRepoImpl(
+          dataSource: ImageDataSource(),
+        ),
+      ).call(
+        image!,
+      );
+      if (imageStorageResponse.statusCode == 200) {
+        print("Image uploaded successfully");
+        uploadedImageUrl = imageStorageResponse.body;
+      } else {
+        print("Image upload failed");
+        updateState = state.copywith(
+          isLoading: false,
+          error: imageStorageResponse.message,
+        );
+        yield updateState;
+        return;
+      }
+    }
+
     ApiResponse response;
     if (state.checkUserType(UserType.volunteer)) {
       response = await ProfileRepositoryImpl(
@@ -56,7 +84,7 @@ class UpdateProfile extends ProfileEvent {
           bio: state.tempBio ?? "",
           userType: state.user?.userType ?? UserType.volunteer,
           profilePictureUrl:
-              "https://img.freepik.com/premium-vector/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-vector-illustration_561158-3383.jpg?w=740",
+              uploadedImageUrl.isNotEmpty ? uploadedImageUrl : "",
           interests: state.tempInterests ?? [],
           skills: state.tempSkills ?? [],
           availability: state.tempAvailability ?? {},
@@ -78,7 +106,7 @@ class UpdateProfile extends ProfileEvent {
           description: state.tempBio ?? "",
           address: state.tempAddress ?? "",
           profilePictureUrl:
-              "https://img.freepik.com/premium-vector/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-vector-illustration_561158-3383.jpg?w=740",
+              uploadedImageUrl.isNotEmpty ? uploadedImageUrl : "",
           postedOpportunities: [],
         ),
       );
