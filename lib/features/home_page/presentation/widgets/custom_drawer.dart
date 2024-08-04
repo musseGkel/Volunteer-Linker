@@ -18,45 +18,47 @@ class CustomDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProfileBloc, ProfileState>(
-      builder: (context, profileState) {
-        String? profilePictureUrl;
-        if (profileState.user?.userType == UserType.volunteer) {
-          profilePictureUrl = profileState.user?.profilePictureUrl ?? "";
-        } else if (profileState.user?.userType == UserType.organization) {
-          profilePictureUrl =
-              profileState.organization?.profilePictureUrl ?? "";
-        }
+    return BlocBuilder<AuthBloc, AuthState>(
+      builder: (context, authState) {
+        return BlocBuilder<ProfileBloc, ProfileState>(
+          builder: (context, profileState) {
+            String? profilePictureUrl;
+            if (profileState.tempUserType == UserType.volunteer) {
+              profilePictureUrl = profileState.user?.profilePictureUrl ?? "";
+            } else if (profileState.tempUserType == UserType.organization) {
+              profilePictureUrl =
+                  profileState.organization?.profilePictureUrl ?? "";
+            }
 
-        String name = profileState.user?.userType == UserType.volunteer
-            ? profileState.user?.name ?? 'Guest User'
-            : profileState.organization?.name ?? 'Guest Organization';
+            String name = profileState.user?.userType == UserType.volunteer
+                ? profileState.user?.name ?? 'Guest User'
+                : profileState.organization?.name ?? 'Guest Organization';
 
-        String email = profileState.user?.userType == UserType.volunteer
-            ? profileState.user?.email ?? 'No email available'
-            : profileState.organization?.email ?? 'No email available';
+            String email = profileState.user?.userType == UserType.volunteer
+                ? profileState.user?.email ?? 'No email available'
+                : profileState.organization?.email ?? 'No email available';
 
-        return Drawer(
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: [
-              UserAccountsDrawerHeader(
-                decoration: const BoxDecoration(
-                  color: AppColors.accentColor,
-                ),
-                accountName: Text(
-                  name,
-                  style: const TextStyle(
-                    color: AppColors.primaryColor,
-                    fontSize: 20,
-                  ),
-                ),
-                accountEmail: Text(
-                  email,
-                  style: const TextStyle(color: AppColors.primaryColor),
-                ),
-                currentAccountPicture:
-                    profilePictureUrl != null && profilePictureUrl.isNotEmpty
+            return Drawer(
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children: [
+                  UserAccountsDrawerHeader(
+                    decoration: const BoxDecoration(
+                      color: AppColors.accentColor,
+                    ),
+                    accountName: Text(
+                      name,
+                      style: const TextStyle(
+                        color: AppColors.primaryColor,
+                        fontSize: 20,
+                      ),
+                    ),
+                    accountEmail: Text(
+                      email,
+                      style: const TextStyle(color: AppColors.primaryColor),
+                    ),
+                    currentAccountPicture: profilePictureUrl != null &&
+                            profilePictureUrl.isNotEmpty
                         ? CircleAvatar(
                             radius: 50,
                             backgroundImage: CachedNetworkImageProvider(
@@ -70,41 +72,48 @@ class CustomDrawer extends StatelessWidget {
                               size: 50,
                             ),
                           ),
+                  ),
+                  ListTile(
+                    selected: authState.isCurrentPage(CurrentPage.home),
+                    leading: Icon(
+                      Icons.home,
+                      size: authState.isCurrentPage(CurrentPage.home) ? 30 : 24,
+                    ),
+                    title: const Text('Home'),
+                    onTap: () => onItemTapped(CurrentPage.home, authState),
+                  ),
+                  if (profileState.tempUserType == UserType.organization)
+                    ListTile(
+                      selected:
+                          authState.isCurrentPage(CurrentPage.postOpportunity),
+                      leading: Icon(
+                        Icons.post_add,
+                        size:
+                            authState.isCurrentPage(CurrentPage.postOpportunity)
+                                ? 30
+                                : 24,
+                      ),
+                      title: const Text('Post Opportunity'),
+                      onTap: () =>
+                          onItemTapped(CurrentPage.postOpportunity, authState),
+                    ),
+                  ListTile(
+                    leading: Icon(
+                      Icons.person,
+                      size: authState.isCurrentPage(CurrentPage.profile)
+                          ? 30
+                          : 24,
+                    ),
+                    title: const Text('Profile'),
+                    onTap: () => onItemTapped(
+                      CurrentPage.profile,
+                      authState,
+                    ),
+                  ),
+                ],
               ),
-              ListTile(
-                selected: authState.isCurrentPage(CurrentPage.home),
-                leading: Icon(
-                  Icons.home,
-                  size: authState.isCurrentPage(CurrentPage.home) ? 30 : 24,
-                ),
-                title: const Text('Home'),
-                onTap: () => onItemTapped(CurrentPage.home, authState),
-              ),
-              ListTile(
-                selected: authState.isCurrentPage(CurrentPage.postOpportunity),
-                leading: Icon(
-                  Icons.post_add,
-                  size: authState.isCurrentPage(CurrentPage.postOpportunity)
-                      ? 30
-                      : 24,
-                ),
-                title: const Text('Post Opportunity'),
-                onTap: () =>
-                    onItemTapped(CurrentPage.postOpportunity, authState),
-              ),
-              ListTile(
-                leading: Icon(
-                  Icons.person,
-                  size: authState.isCurrentPage(CurrentPage.profile) ? 30 : 24,
-                ),
-                title: const Text('Profile'),
-                onTap: () => onItemTapped(
-                  CurrentPage.profile,
-                  authState,
-                ),
-              ),
-            ],
-          ),
+            );
+          },
         );
       },
     );

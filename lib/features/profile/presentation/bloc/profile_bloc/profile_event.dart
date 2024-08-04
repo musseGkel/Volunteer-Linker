@@ -189,22 +189,23 @@ class GetProfile extends ProfileEvent {
             tempBio: response.body.description,
             tempAddress: response.body.address,
             tempProfilePictureUrl: response.body.profilePictureUrl,
+            tempUserType: response.body.userType,
           );
         } else {
           updateState = state.copywith(
-            user: response.body as UserData,
-            isLoading: false,
-            tempName: response.body.name,
-            tempUsername: response.body.username,
-            tempEmail: response.body.email,
-            tempBio: response.body.bio,
-            tempSkills: response.body.skills,
-            tempInterests: response.body.interests,
-            tempAvailability: response.body.availability,
-            tempVolunteerActivities: response.body.volunteerActivities,
-            tempPhoneNumber: response.body.phoneNumber,
-            tempProfilePictureUrl: response.body.profilePictureUrl,
-          );
+              user: response.body as UserData,
+              isLoading: false,
+              tempName: response.body.name,
+              tempUsername: response.body.username,
+              tempEmail: response.body.email,
+              tempBio: response.body.bio,
+              tempSkills: response.body.skills,
+              tempInterests: response.body.interests,
+              tempAvailability: response.body.availability,
+              tempVolunteerActivities: response.body.volunteerActivities,
+              tempPhoneNumber: response.body.phoneNumber,
+              tempProfilePictureUrl: response.body.profilePictureUrl,
+              tempUserType: response.body.userType);
         }
 
         yield updateState;
