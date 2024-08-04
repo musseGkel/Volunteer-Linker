@@ -13,6 +13,8 @@ class Opportunity {
   List<String> attendees;
   DateTime? createdAt;
   String imageUrl;
+  String organizationLogoUrl;
+  String organizationName;
 
   Opportunity({
     this.id,
@@ -27,6 +29,8 @@ class Opportunity {
     this.attendees = const [],
     this.createdAt,
     this.imageUrl = '',
+    this.organizationLogoUrl = '',
+    this.organizationName = '',
   });
 
   factory Opportunity.fromJson(Map<String, dynamic> json) {
@@ -44,6 +48,8 @@ class Opportunity {
       createdAt:
           json['createdAt'] != null ? DateTime.parse(json['createdAt']) : null,
       imageUrl: json['imageUrl'] ?? '',
+      organizationLogoUrl: json['organizationLogoUrl'] ?? "",
+      organizationName: json['organizationName'] ?? "",
     );
   }
 
@@ -61,6 +67,8 @@ class Opportunity {
       'attendees': attendees,
       'createdAt': createdAt?.toIso8601String(),
       'imageUrl': imageUrl,
+      'organizationLogoUrl': organizationLogoUrl,
+      'organizationName': organizationName,
     };
   }
 }
