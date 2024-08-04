@@ -23,7 +23,7 @@ class PickImageFromGalleryEvent extends ImagePickerEvent {
     try {
       final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
       if (pickedFile != null) {
-        final image = FileImage(File(pickedFile.path));
+        final image = File(pickedFile.path);
         updatedState = state.copyWith(
           image: image,
         );
@@ -54,7 +54,7 @@ class TakePhotoEvent extends ImagePickerEvent {
     try {
       final pickedFile = await _picker.pickImage(source: ImageSource.camera);
       if (pickedFile != null) {
-        final image = FileImage(File(pickedFile.path));
+        final image = File(pickedFile.path);
         updatedState = state.copyWith(image: image);
         yield updatedState;
       } else {

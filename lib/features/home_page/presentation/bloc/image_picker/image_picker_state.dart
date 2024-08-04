@@ -1,7 +1,7 @@
 part of 'image_picker_bloc.dart';
 
 class ImagePickerState extends Equatable {
-  final ImageProvider? image;
+  final File? image;
   final String? errorMessage;
 
   const ImagePickerState({
@@ -16,7 +16,7 @@ class ImagePickerState extends Equatable {
       ];
 
   ImagePickerState copyWith({
-    ImageProvider? image,
+    File? image,
     String? errorMessage,
   }) {
     return ImagePickerState(
