@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:volunteer_linker/constants/app_colors.dart';
@@ -42,10 +43,23 @@ class OpportunityCard extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    CircleAvatar(
-                      backgroundImage: NetworkImage(organizationLogoUrl),
-                      radius: 20,
-                    ),
+                    organizationLogoUrl.isNotEmpty
+                        ? CircleAvatar(
+                            radius: 20,
+                            backgroundImage:
+                                CachedNetworkImageProvider(organizationLogoUrl),
+                          )
+                        : const CircleAvatar(
+                            radius: 20,
+                            backgroundColor: AppColors.greyColor,
+                            child: Center(
+                              child: Icon(
+                                Icons.person,
+                                size: 24,
+                                color: AppColors.primaryColor,
+                              ),
+                            ),
+                          ),
                     const SizedBox(width: 10),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,11 +86,18 @@ class OpportunityCard extends StatelessWidget {
                 const SizedBox(height: 10),
                 ClipRRect(
                   borderRadius: BorderRadius.circular(10),
-                  child: Image.network(
-                    imageUrl,
+                  child: CachedNetworkImage(
+                    imageUrl: imageUrl.isEmpty
+                        ? 'https://images.pexels.com/photos/214574/pexels-photo-214574.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
+                        : imageUrl,
                     height: 150,
                     width: double.infinity,
                     fit: BoxFit.cover,
+                    placeholder: (context, url) => const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
                   ),
                 ),
                 const SizedBox(height: 10),
