@@ -5,6 +5,7 @@ import 'package:volunteer_linker/core/enums.dart';
 
 import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../../opportunity/data/model/opportunity.dart';
+import '../../../profile/presentation/bloc/profile_bloc/profile_bloc.dart';
 import '../bloc/home_page_bloc.dart';
 import '../widgets/custom_drawer.dart';
 import '../widgets/opportunity_card.dart';
@@ -27,6 +28,12 @@ class _HomePageState extends State<HomePage> {
       _fetchPage(pageKey);
     });
     _fetchPage(0);
+
+    context.read<ProfileBloc>().add(
+          GetProfile(
+            state: context.read<ProfileBloc>().state,
+          ),
+        );
   }
 
   void _fetchPage(int pageKey) {

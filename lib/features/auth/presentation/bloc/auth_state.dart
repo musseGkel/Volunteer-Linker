@@ -47,4 +47,6 @@ class AuthState extends Equatable {
 
   bool isOnLogin() => authMode == AuthMode.login;
   bool isOnRegister() => authMode == AuthMode.register;
+
+  bool isCurrentPage(CurrentPage page) => currentPage == page;
 }
