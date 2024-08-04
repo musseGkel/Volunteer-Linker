@@ -42,36 +42,42 @@ class CustomDrawer extends StatelessWidget {
               child: ListView(
                 padding: EdgeInsets.zero,
                 children: [
-                  UserAccountsDrawerHeader(
-                    decoration: const BoxDecoration(
-                      color: AppColors.accentColor,
-                    ),
-                    accountName: Text(
-                      name,
-                      style: const TextStyle(
-                        color: AppColors.primaryColor,
-                        fontSize: 20,
+                  GestureDetector(
+                    onTap: () {
+                      BlocProvider.of<AuthBloc>(context).add(ChangePageEvent(
+                          state: authState, changePage: CurrentPage.profile));
+                    },
+                    child: UserAccountsDrawerHeader(
+                      decoration: const BoxDecoration(
+                        color: AppColors.accentColor,
                       ),
-                    ),
-                    accountEmail: Text(
-                      email,
-                      style: const TextStyle(color: AppColors.primaryColor),
-                    ),
-                    currentAccountPicture: profilePictureUrl != null &&
-                            profilePictureUrl.isNotEmpty
-                        ? CircleAvatar(
-                            radius: 50,
-                            backgroundImage: CachedNetworkImageProvider(
-                              profileState.tempProfilePictureUrl!,
+                      accountName: Text(
+                        name,
+                        style: const TextStyle(
+                          color: AppColors.primaryColor,
+                          fontSize: 20,
+                        ),
+                      ),
+                      accountEmail: Text(
+                        email,
+                        style: const TextStyle(color: AppColors.primaryColor),
+                      ),
+                      currentAccountPicture: profilePictureUrl != null &&
+                              profilePictureUrl.isNotEmpty
+                          ? CircleAvatar(
+                              radius: 50,
+                              backgroundImage: CachedNetworkImageProvider(
+                                profileState.tempProfilePictureUrl!,
+                              ),
+                            )
+                          : const CircleAvatar(
+                              radius: 50,
+                              child: Icon(
+                                Icons.person,
+                                size: 50,
+                              ),
                             ),
-                          )
-                        : const CircleAvatar(
-                            radius: 50,
-                            child: Icon(
-                              Icons.person,
-                              size: 50,
-                            ),
-                          ),
+                    ),
                   ),
                   ListTile(
                     selected: authState.isCurrentPage(CurrentPage.home),
