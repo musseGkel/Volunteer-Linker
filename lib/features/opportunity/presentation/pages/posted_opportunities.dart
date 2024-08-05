@@ -67,9 +67,6 @@ class _PostedOpportunitiesState extends State<PostedOpportunities> {
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, authState) {
-        print("Current page: ${authState.currentPage}");
-        print("selectedOpportunityId: ${authState.selectedOpportunityId}");
-
         return RefreshIndicator(
           onRefresh: _refreshOpportunities,
           child: Scaffold(

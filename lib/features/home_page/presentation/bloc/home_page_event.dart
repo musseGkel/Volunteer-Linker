@@ -27,13 +27,10 @@ class FetchPostsEvent extends HomePageEvent {
   Stream<HomePageState> handle() async* {
     ApiResponse response;
 
-    print('FetchPostsEvent handle called');
-
     if (state.hasReachedMax && !isInitial) return;
 
     try {
       if (state.status == PostStatus.initial || isInitial) {
-        print('FetchPostsEvent handle called initial');
         response = await FetchPostsUseCase(
           HomePageRepoImpl(
             HomePageDatasource(),

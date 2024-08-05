@@ -52,11 +52,6 @@ class RoutingPage extends StatelessWidget {
           }
         },
         builder: (context, state) {
-          print("AuthBloc Current Page: ${state.currentPage}");
-          print(
-            "AuthBloc opportunityId: ${state.selectedOpportunityId}",
-          );
-
           if (state.user != null) {
             if (state.currentPage == CurrentPage.postOpportunity) {
               return const PostOpportunity();
@@ -72,7 +67,7 @@ class RoutingPage extends StatelessWidget {
               return const PostedOpportunities();
             } else if (state.currentPage == CurrentPage.participants) {
               return ParticipantsPage(
-                opportunityId: state.selectedOpportunityId ?? "",
+                opportunityId: state.selectedOpportunityId,
               );
             }
           }

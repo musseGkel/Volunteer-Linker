@@ -111,9 +111,7 @@ class _AvailabilityWidgetState extends State<AvailabilityWidget> {
   }
 
   void _exportAvailability(ProfileState profileState) {
-    _availability.forEach((day, times) {
-      print('$day: ${times.map((time) => time.format(context)).join(', ')}');
-    });
+    _availability.forEach((day, times) {});
 
     BlocProvider.of<ProfileBloc>(context).add(
       UpdateAvailability(

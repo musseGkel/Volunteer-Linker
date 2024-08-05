@@ -28,7 +28,7 @@ class RegisterToAnOpportunity extends OpportunityAttendanceEvent {
   Stream<OpportunityAttendanceState> handle() async* {
     yield const OpportunityAttendanceState(isLoading: true);
 
-    ApiResponse response = await AttendOpportunityUsecase(
+    await AttendOpportunityUsecase(
       OpportunityRepositoryImpl(
         remoteDataSource: OpportunityDatasource(),
       ),
@@ -59,8 +59,7 @@ class ApproveAttendance extends OpportunityAttendanceEvent {
   @override
   Stream<OpportunityAttendanceState> handle() async* {
     yield const OpportunityAttendanceState(isLoading: true);
-
-    ApiResponse response = await ApproveAttendanceUsecase(
+    await ApproveAttendanceUsecase(
       OpportunityRepositoryImpl(
         remoteDataSource: OpportunityDatasource(),
       ),
@@ -165,8 +164,6 @@ class FetchAttendantsAndRegisteredUsers extends OpportunityAttendanceEvent {
       isLoading: true,
     );
 
-    print("FetchAttendantsAndRegisteredUsers opportunityId: $opportunityId");
-
     opportunityResponse = await FetchOpportunityUsecase(
       OpportunityRepositoryImpl(
         remoteDataSource: OpportunityDatasource(),
@@ -175,21 +172,11 @@ class FetchAttendantsAndRegisteredUsers extends OpportunityAttendanceEvent {
       opportunityId,
     );
 
-    print(
-        "FetchAttendantsAndRegisteredUsers opportunityResponse: ${opportunityResponse.statusCode}");
-
     if (opportunityResponse.statusCode == 200) {
-      print(
-          "FetchAttendantsAndRegisteredUsers opportunityResponse: ${opportunityResponse.body}");
-
       Opportunity opportunity = opportunityResponse.body as Opportunity;
 
       List<String> attendees = opportunity.attendees;
       List<String> registeredUsers = opportunity.registeredUsers;
-
-      print("FetchAttendantsAndRegisteredUsers attendees:   $attendees");
-      print(
-          "FetchAttendantsAndRegisteredUsers registeredUsers: $registeredUsers");
 
       if (attendees.isNotEmpty) {
         attendeesResponse = await FetchAttendantsUseCase(
@@ -203,9 +190,6 @@ class FetchAttendantsAndRegisteredUsers extends OpportunityAttendanceEvent {
         if (attendeesResponse.statusCode == 200) {
           List<UserData> fetchedAttendees =
               attendeesResponse.body as List<UserData>;
-
-          print(
-              "FetchAttendantsAndRegisteredUsers fetchedAttendees: $fetchedAttendees");
 
           updatedState = state.copyWith(
             attendees: fetchedAttendees,

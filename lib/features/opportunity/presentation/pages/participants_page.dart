@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../constants/app_colors.dart';
@@ -54,9 +52,6 @@ class _ParticipantsPageState extends State<ParticipantsPage> {
   Widget build(BuildContext context) {
     return BlocBuilder<OpportunityAttendanceBloc, OpportunityAttendanceState>(
       builder: (context, state) {
-        print("ParticipantsPage attendees: ${state.attendees}");
-        print("ParticipantsPage registeredUsers: ${state.registeredUsers}");
-
         return BlocBuilder<AuthBloc, AuthState>(
           builder: (context, authState) {
             return DefaultTabController(

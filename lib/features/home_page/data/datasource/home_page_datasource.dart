@@ -34,8 +34,6 @@ class HomePageDatasource {
         },
       ).toList();
 
-      print("Opportunities: $opportunities");
-
       return ApiResponse(
         statusCode: 200,
         message: "Success",
@@ -46,7 +44,6 @@ class HomePageDatasource {
         },
       );
     } catch (e) {
-      print("Error: $e");
       return ApiResponse(
         statusCode: 400,
         message: "Error",

@@ -195,8 +195,6 @@ class ChangePageEvent extends AuthEvent {
 
   @override
   Stream<AuthState> handle() async* {
-    print("ChangePageEvent $changePage");
-
     AuthState updatedState = state.copyWith(
       currentPage: changePage,
       selectedOpportunityId: opportunityId,

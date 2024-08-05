@@ -17,10 +17,9 @@ class OpportunityDatasource {
           message: "Error",
         );
       } else {
-        var response =
-            await _firestore.collection('posts').doc(opportunity.id).set(
-                  opportunity.toJson(),
-                );
+        await _firestore.collection('posts').doc(opportunity.id).set(
+              opportunity.toJson(),
+            );
 
         return ApiResponse(
           statusCode: 200,
@@ -47,14 +46,12 @@ class OpportunityDatasource {
         )
       });
 
-      print("attendAnOpportunity : success");
 
       return ApiResponse(
         statusCode: 200,
         message: "Success",
       );
     } catch (e) {
-      print("attendAnOpportunity Error : $e");
       return ApiResponse(
         statusCode: 400,
         message: "Error",
@@ -95,14 +92,12 @@ class OpportunityDatasource {
         });
       });
 
-      print("approveAttendance : success");
 
       return ApiResponse(
         statusCode: 200,
         message: "Success",
       );
     } catch (e) {
-      print("approveAttendance Error : $e");
       return ApiResponse(
         statusCode: 400,
         message: "Error",
@@ -116,7 +111,6 @@ class OpportunityDatasource {
     try {
       var response =
           await _firestore.collection('posts').doc(opportunityId).get();
-      print("fetchOpportunity : success");
 
       return ApiResponse(
         statusCode: 200,
@@ -126,7 +120,6 @@ class OpportunityDatasource {
         ),
       );
     } catch (e) {
-      print("Error : $e");
       return ApiResponse(
         statusCode: 400,
         message: "Error",
@@ -141,19 +134,16 @@ class OpportunityDatasource {
       List<UserData> users = [];
 
       for (String userId in attendants) {
-        print("fetchAttendants userId: $userId");
         DocumentSnapshot userDoc = await FirebaseFirestore.instance
             .collection('users')
             .doc(userId)
             .get();
         if (userDoc.exists) {
-          print("fetchAttendants : ${userDoc.data()}");
 
           users.add(UserData.fromJson(userDoc.data() as Map<String, dynamic>));
         }
       }
-      print("fetchAttendants : success");
-      print("fetchAttendants : $users");
+
 
       return ApiResponse(
         statusCode: 200,
@@ -161,7 +151,6 @@ class OpportunityDatasource {
         body: users,
       );
     } catch (e) {
-      print("fetchAttendants Error : $e");
       return ApiResponse(
         statusCode: 400,
         message: "Error",
@@ -180,14 +169,10 @@ class OpportunityDatasource {
           .doc(userId)
           .get();
       if (userDoc.exists) {
-        print("fetchAttendants : ${userDoc.data()}");
 
         users.add(UserData.fromJson(userDoc.data() as Map<String, dynamic>));
       }
     }
-
-    print("fetchRegisteredUsers : success");
-    print("fetchRegisteredUsers : $users");
 
     return ApiResponse(
       statusCode: 200,

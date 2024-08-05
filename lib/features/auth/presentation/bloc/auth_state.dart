@@ -39,17 +39,6 @@ class AuthState extends Equatable {
     CurrentPage? currentPage,
     String? selectedOpportunityId,
   }) {
-    print(
-        'AuthState copyWith called this.selectedOpportunityId ${this.selectedOpportunityId}');
-    print(
-        'AuthState copyWith called selectedOpportunityId ${selectedOpportunityId}');
-    print(
-      'AuthState copyWith called this.currentPage ${this.currentPage}',
-    );
-    print(
-      'AuthState copyWith called userType ${this.userType}',
-    );
-
     return AuthState(
       user: user ?? this.user,
       errorMessage: errorMessage ?? this.errorMessage,

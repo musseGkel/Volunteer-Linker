@@ -108,8 +108,6 @@ class _HomePageState extends State<HomePage> {
                               organizationLogoUrl: item.organizationLogoUrl,
                               participants: item.registeredUsers.length,
                               onApply: () {
-                                print('Applying to opportunity');
-
                                 BlocProvider.of<OpportunityAttendanceBloc>(
                                         context)
                                     .add(

@@ -58,10 +58,8 @@ class UpdateProfile extends ProfileEvent {
         image!,
       );
       if (imageStorageResponse.statusCode == 200) {
-        print("Image uploaded successfully");
         uploadedImageUrl = imageStorageResponse.body;
       } else {
-        print("Image upload failed");
         updateState = state.copywith(
           isLoading: false,
           error: imageStorageResponse.message,
@@ -146,7 +144,6 @@ class GetProfile extends ProfileEvent {
 
   @override
   Stream<ProfileState> handle() async* {
-    print("#############userId:$userId ##################");
     ProfileState updateState = state.copywith(
       isLoading: true,
     );
