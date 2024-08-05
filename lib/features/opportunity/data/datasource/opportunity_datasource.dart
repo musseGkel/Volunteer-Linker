@@ -35,12 +35,16 @@ class OpportunityDatasource {
     }
   }
 
-  Future<ApiResponse> attendAnOpportunity(
-      {required String opportunityId, required String userId}) async {
+  Future<ApiResponse> registerToOpportunity({
+    required String opportunityId,
+    required String userId,
+  }) async {
     try {
       var response =
           await _firestore.collection('posts').doc(opportunityId).update({
-        'attendees': FieldValue.arrayUnion([userId])
+        'registeredUsers': FieldValue.arrayUnion(
+          [userId],
+        )
       });
 
       print("attendAnOpportunity : success");
@@ -51,6 +55,54 @@ class OpportunityDatasource {
       );
     } catch (e) {
       print("attendAnOpportunity Error : $e");
+      return ApiResponse(
+        statusCode: 400,
+        message: "Error",
+      );
+    }
+  }
+
+  Future<ApiResponse> approveAttendance({
+    required String opportunityId,
+    required String userId,
+  }) async {
+    final DocumentReference opportunityRef =
+        _firestore.collection('posts').doc(opportunityId);
+
+    try {
+      await _firestore.runTransaction((transaction) async {
+        DocumentSnapshot opportunitySnapshot =
+            await transaction.get(opportunityRef);
+
+        if (!opportunitySnapshot.exists) {
+          throw Exception("Opportunity does not exist");
+        }
+
+        List<String> attendees = List.from(opportunitySnapshot['attendees']);
+        List<String> registeredUsers =
+            List.from(opportunitySnapshot['registeredUsers']);
+
+        if (!attendees.contains(userId)) {
+          attendees.add(userId);
+        }
+        if (registeredUsers.contains(userId)) {
+          registeredUsers.remove(userId);
+        }
+
+        transaction.update(opportunityRef, {
+          'attendees': attendees,
+          'registeredUsers': registeredUsers,
+        });
+      });
+
+      print("approveAttendance : success");
+
+      return ApiResponse(
+        statusCode: 200,
+        message: "Success",
+      );
+    } catch (e) {
+      print("approveAttendance Error : $e");
       return ApiResponse(
         statusCode: 400,
         message: "Error",
