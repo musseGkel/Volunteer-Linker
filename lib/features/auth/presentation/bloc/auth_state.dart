@@ -7,6 +7,7 @@ class AuthState extends Equatable {
   final AuthMode authMode;
   final UserType userType;
   final CurrentPage currentPage;
+  final String selectedOpportunityId;
 
   const AuthState({
     this.userType = UserType.volunteer,
@@ -15,6 +16,7 @@ class AuthState extends Equatable {
     this.isLoading = false,
     this.authMode = AuthMode.login,
     this.currentPage = CurrentPage.home,
+    this.selectedOpportunityId = "",
   });
 
   @override
@@ -25,6 +27,7 @@ class AuthState extends Equatable {
         authMode,
         userType,
         currentPage,
+        selectedOpportunityId,
       ];
 
   copyWith({
@@ -34,7 +37,19 @@ class AuthState extends Equatable {
     AuthMode? authMode,
     UserType? userType,
     CurrentPage? currentPage,
+    String? selectedOpportunityId,
   }) {
+    print(
+        'AuthState copyWith called this.selectedOpportunityId ${this.selectedOpportunityId}');
+    print(
+        'AuthState copyWith called selectedOpportunityId ${selectedOpportunityId}');
+    print(
+      'AuthState copyWith called this.currentPage ${this.currentPage}',
+    );
+    print(
+      'AuthState copyWith called userType ${this.userType}',
+    );
+
     return AuthState(
       user: user ?? this.user,
       errorMessage: errorMessage ?? this.errorMessage,
@@ -42,6 +57,8 @@ class AuthState extends Equatable {
       authMode: authMode ?? this.authMode,
       userType: userType ?? this.userType,
       currentPage: currentPage ?? this.currentPage,
+      selectedOpportunityId:
+          selectedOpportunityId ?? this.selectedOpportunityId,
     );
   }
 

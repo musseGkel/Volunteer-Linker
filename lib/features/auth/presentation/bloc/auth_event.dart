@@ -185,15 +185,39 @@ class AuthChangesEvent extends AuthEvent {
 class ChangePageEvent extends AuthEvent {
   final CurrentPage changePage;
   final AuthState state;
+  final String? opportunityId;
+
   const ChangePageEvent({
     required this.changePage,
+    required this.state,
+    this.opportunityId,
+  });
+
+  @override
+  Stream<AuthState> handle() async* {
+    print("ChangePageEvent $changePage");
+
+    AuthState updatedState = state.copyWith(
+      currentPage: changePage,
+      selectedOpportunityId: opportunityId,
+    );
+
+    yield updatedState;
+  }
+}
+
+class SelectOpportunityId extends AuthEvent {
+  final String opportunityId;
+  final AuthState state;
+  const SelectOpportunityId({
+    required this.opportunityId,
     required this.state,
   });
 
   @override
   Stream<AuthState> handle() async* {
     AuthState updatedState = state.copyWith(
-      currentPage: changePage,
+      selectedOpportunityId: opportunityId,
     );
     yield updatedState;
   }
