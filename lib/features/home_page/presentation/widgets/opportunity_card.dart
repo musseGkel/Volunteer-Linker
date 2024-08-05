@@ -14,6 +14,7 @@ class OpportunityCard extends StatelessWidget {
   final int participants;
   final VoidCallback onApply;
   final String address;
+  final bool canApply;
 
   const OpportunityCard({
     super.key,
@@ -25,6 +26,7 @@ class OpportunityCard extends StatelessWidget {
     required this.onApply,
     required this.organizationLogoUrl,
     required this.address,
+    this.canApply = false,
   });
 
   @override
@@ -150,21 +152,22 @@ class OpportunityCard extends StatelessWidget {
                         ),
                       ],
                     ),
-                    ElevatedButton(
-                      onPressed: onApply,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.accentColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
+                    if (canApply)
+                      ElevatedButton(
+                        onPressed: onApply,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.accentColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                        child: const Text(
+                          'APPLY',
+                          style: TextStyle(
+                            color: AppColors.primaryTextColor,
+                          ),
                         ),
                       ),
-                      child: const Text(
-                        'APPLY',
-                        style: TextStyle(
-                          color: AppColors.primaryTextColor,
-                        ),
-                      ),
-                    ),
                   ],
                 ),
               ],
