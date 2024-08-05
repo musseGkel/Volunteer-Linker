@@ -131,13 +131,22 @@ class UpdateProfile extends ProfileEvent {
 
 class GetProfile extends ProfileEvent {
   final ProfileState state;
+  final String userId;
 
   const GetProfile({
     required this.state,
+    this.userId = "",
   });
 
   @override
+  List<Object> get props => [
+        state,
+        userId,
+      ];
+
+  @override
   Stream<ProfileState> handle() async* {
+    print("#############userId:$userId ##################");
     ProfileState updateState = state.copywith(
       isLoading: true,
     );
