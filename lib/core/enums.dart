@@ -31,6 +31,7 @@ enum CurrentPage {
   registration,
   postOpportunity,
   home,
+  postedOpportunities,
 }
 
 String enumToString(Object enumValue) {
