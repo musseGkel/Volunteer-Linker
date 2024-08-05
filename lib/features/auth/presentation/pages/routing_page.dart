@@ -40,7 +40,17 @@ class RoutingPage extends StatelessWidget {
           create: (context) => OpportunityAttendanceBloc(),
         ),
       ],
-      child: BlocBuilder<AuthBloc, AuthState>(
+      child: BlocConsumer<AuthBloc, AuthState>(
+        listener: (context, state) {
+          if (state.currentPage == CurrentPage.home) {
+            context.read<ProfileBloc>().add(
+                  GetProfile(
+                    state: context.read<ProfileBloc>().state,
+                    userId: state.user?.uid ?? "",
+                  ),
+                );
+          }
+        },
         builder: (context, state) {
           print("AuthBloc Current Page: ${state.currentPage}");
           print(

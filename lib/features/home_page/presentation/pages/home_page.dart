@@ -29,12 +29,6 @@ class _HomePageState extends State<HomePage> {
       _fetchPage(pageKey);
     });
     _fetchPage(0);
-
-    context.read<ProfileBloc>().add(
-          GetProfile(
-            state: context.read<ProfileBloc>().state,
-          ),
-        );
   }
 
   void _fetchPage(int pageKey, {bool isInitial = false}) {
@@ -119,7 +113,7 @@ class _HomePageState extends State<HomePage> {
                                 BlocProvider.of<OpportunityAttendanceBloc>(
                                         context)
                                     .add(
-                                  AttendAnOpportunity(
+                                  RegisterToAnOpportunity(
                                     opportunityId: item.id ?? '',
                                     userId: authState.user!.uid,
                                   ),
