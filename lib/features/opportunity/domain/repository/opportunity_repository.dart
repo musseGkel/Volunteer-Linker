@@ -12,6 +12,11 @@ abstract class OpportunityRepository {
     required String userId,
   });
 
+  Future<ApiResponse> approveAttendance({
+    required String opportunityId,
+    required String userId,
+  });
+
   Future<ApiResponse> fetchOpportunity({
     required String opportunityId,
   });

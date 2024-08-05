@@ -29,6 +29,15 @@ class OpportunityRepositoryImpl implements OpportunityRepository {
   }
 
   @override
+  Future<ApiResponse> approveAttendance(
+      {required String opportunityId, required String userId}) async {
+    return await remoteDataSource.approveAttendance(
+      opportunityId: opportunityId,
+      userId: userId,
+    );
+  }
+
+  @override
   Future<ApiResponse> fetchAttendants({required List<String> attendants}) {
     return remoteDataSource.fetchAttendants(
       attendants: attendants,

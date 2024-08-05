@@ -9,11 +9,11 @@ sealed class OpportunityAttendanceEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class AttendAnOpportunity extends OpportunityAttendanceEvent {
+class RegisterToAnOpportunity extends OpportunityAttendanceEvent {
   final String opportunityId;
   final String userId;
 
-  const AttendAnOpportunity({
+  const RegisterToAnOpportunity({
     required this.opportunityId,
     required this.userId,
   });
@@ -33,6 +33,38 @@ class AttendAnOpportunity extends OpportunityAttendanceEvent {
         remoteDataSource: OpportunityDatasource(),
       ),
     ).registerToOpportunity(
+      opportunityId: opportunityId,
+      userId: userId,
+    );
+
+    yield const OpportunityAttendanceState(isLoading: false);
+  }
+}
+
+class ApproveAttendance extends OpportunityAttendanceEvent {
+  final String opportunityId;
+  final String userId;
+
+  const ApproveAttendance({
+    required this.opportunityId,
+    required this.userId,
+  });
+
+  @override
+  List<Object> get props => [
+        opportunityId,
+        userId,
+      ];
+
+  @override
+  Stream<OpportunityAttendanceState> handle() async* {
+    yield const OpportunityAttendanceState(isLoading: true);
+
+    ApiResponse response = await ApproveAttendanceUsecase(
+      OpportunityRepositoryImpl(
+        remoteDataSource: OpportunityDatasource(),
+      ),
+    ).approveAttendance(
       opportunityId: opportunityId,
       userId: userId,
     );
@@ -172,11 +204,16 @@ class FetchAttendantsAndRegisteredUsers extends OpportunityAttendanceEvent {
           List<UserData> fetchedAttendees =
               attendeesResponse.body as List<UserData>;
 
-          yield updatedState.copyWith(
+          print(
+              "FetchAttendantsAndRegisteredUsers fetchedAttendees: $fetchedAttendees");
+
+          updatedState = state.copyWith(
             attendees: fetchedAttendees,
+            registeredUsers: [],
             isLoaded: true,
-            isLoading: false,
+            isLoading: true,
           );
+          yield updatedState;
         }
       }
 
@@ -193,13 +230,19 @@ class FetchAttendantsAndRegisteredUsers extends OpportunityAttendanceEvent {
           List<UserData> fetchedRegisteredUsers =
               registeredUsersResponse.body as List<UserData>;
 
-          yield updatedState.copyWith(
+          updatedState = updatedState.copyWith(
             registeredUsers: fetchedRegisteredUsers,
             isLoaded: true,
-            isLoading: false,
+            isLoading: true,
           );
+          yield updatedState;
         }
       }
     }
+    updatedState = updatedState.copyWith(
+      isLoading: false,
+    );
+
+    yield updatedState;
   }
 }

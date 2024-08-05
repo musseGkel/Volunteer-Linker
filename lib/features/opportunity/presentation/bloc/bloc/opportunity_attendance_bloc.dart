@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
-import 'package:volunteer_linker/features/opportunity/domain/usecases/attend_opportunity_usecase.dart';
+import 'package:volunteer_linker/features/opportunity/domain/usecases/register_to_opportunity_usecase.dart';
 import 'package:volunteer_linker/services/api_reponse.dart';
 
 import '../../../../../core/models/user_data.dart';
@@ -12,6 +12,7 @@ import '../../../../home_page/presentation/bloc/home_page_bloc.dart';
 import '../../../data/datasource/opportunity_datasource.dart';
 import '../../../data/model/opportunity.dart';
 import '../../../data/repository/opportunity_repository_impl.dart';
+import '../../../domain/usecases/approve_attendance_usecase.dart';
 import '../../../domain/usecases/fetch_attendants_usecase.dart';
 import '../../../domain/usecases/fetch_opportunity_usecase.dart';
 import '../../../domain/usecases/fetch_registered_usecase.dart';
