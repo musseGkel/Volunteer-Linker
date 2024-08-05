@@ -9,6 +9,7 @@ import 'package:volunteer_linker/features/opportunity/presentation/pages/post_op
 import 'package:volunteer_linker/features/opportunity/presentation/pages/posted_opportunities.dart';
 
 import '../../../home_page/presentation/pages/home_page.dart';
+import '../../../opportunity/presentation/pages/participants_page.dart';
 import '../../../profile/presentation/bloc/profile_bloc/profile_bloc.dart';
 import '../../../profile/presentation/pages/profile_page.dart';
 import '../bloc/auth_bloc.dart';
@@ -41,6 +42,11 @@ class RoutingPage extends StatelessWidget {
       ],
       child: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {
+          print("AuthBloc Current Page: ${state.currentPage}");
+          print(
+            "AuthBloc opportunityId: ${state.selectedOpportunityId}",
+          );
+
           if (state.user != null) {
             if (state.currentPage == CurrentPage.postOpportunity) {
               return const PostOpportunity();
@@ -54,6 +60,10 @@ class RoutingPage extends StatelessWidget {
               return const HomePage();
             } else if (state.currentPage == CurrentPage.postedOpportunities) {
               return const PostedOpportunities();
+            } else if (state.currentPage == CurrentPage.participants) {
+              return ParticipantsPage(
+                opportunityId: state.selectedOpportunityId ?? "",
+              );
             }
           }
           return const LoginScreen();
