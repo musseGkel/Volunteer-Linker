@@ -37,9 +37,10 @@ class _HomePageState extends State<HomePage> {
         );
   }
 
-  void _fetchPage(int pageKey) {
+  void _fetchPage(int pageKey, {bool isInitial = false}) {
     context.read<HomePageBloc>().add(FetchPostsEvent(
           state: context.read<HomePageBloc>().state,
+          isInitial: isInitial,
         ));
   }
 
@@ -58,67 +59,89 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthBloc, AuthState>(
-      builder: (context, authState) {
-        return Scaffold(
-          appBar: AppBar(
-            title: const Text('Home Page'),
-            centerTitle: true,
-            leading: Builder(
-              builder: (context) => IconButton(
-                icon: const Icon(Icons.menu),
-                onPressed: () => Scaffold.of(context).openDrawer(),
-              ),
-            ),
-          ),
-          drawer: CustomDrawer(
-            authState: authState,
-            onItemTapped: _onItemTapped,
-          ),
-          body: BlocBuilder<HomePageBloc, HomePageState>(
-            builder: (context, state) {
-              switch (state.status) {
-                case PostStatus.failure:
-                  return const Center(child: Text('Failed to fetch posts'));
-                case PostStatus.success:
-                  if (state.opportunities.isEmpty) {
-                    return const Center(child: Text('No posts available'));
-                  }
-                  _pagingController.value = PagingState(
-                    itemList: state.opportunities,
-                    error: null,
-                    nextPageKey:
-                        state.hasReachedMax ? null : state.opportunities.length,
-                  );
-                  return PagedListView<int, Opportunity>(
-                    pagingController: _pagingController,
-                    builderDelegate: PagedChildBuilderDelegate<Opportunity>(
-                      itemBuilder: (context, item, index) => OpportunityCard(
-                        organizationName: item.organizationName,
-                        createdAt: item.createdAt ?? DateTime.now(),
-                        address: item.location.readableAddress,
-                        imageUrl: item.imageUrl,
-                        description: item.description,
-                        organizationLogoUrl: item.organizationLogoUrl,
-                        participants: item.registeredUsers.length,
-                        onApply: () {
-                          BlocProvider.of<OpportunityAttendanceBloc>(context)
-                              .add(
-                            AttendAnOpportunity(
-                              opportunityId: item.id ?? '',
-                              userId: authState.user!.uid,
-                            ),
-                          );
-                        },
-                      ),
+    return BlocBuilder<ProfileBloc, ProfileState>(
+      builder: (context, profileState) {
+        return BlocBuilder<AuthBloc, AuthState>(
+          builder: (context, authState) {
+            return RefreshIndicator(
+              onRefresh: () async {
+                _fetchPage(0, isInitial: true);
+              },
+              child: Scaffold(
+                appBar: AppBar(
+                  title: const Text('Home Page'),
+                  centerTitle: true,
+                  leading: Builder(
+                    builder: (context) => IconButton(
+                      icon: const Icon(Icons.menu),
+                      onPressed: () => Scaffold.of(context).openDrawer(),
                     ),
-                  );
-                case PostStatus.initial:
-                default:
-                  return const Center(child: CircularProgressIndicator());
-              }
-            },
-          ),
+                  ),
+                ),
+                drawer: CustomDrawer(
+                  authState: authState,
+                  onItemTapped: _onItemTapped,
+                ),
+                body: BlocBuilder<HomePageBloc, HomePageState>(
+                  builder: (context, state) {
+                    switch (state.status) {
+                      case PostStatus.failure:
+                        return const Center(
+                            child: Text('Failed to fetch posts'));
+                      case PostStatus.success:
+                        if (state.opportunities.isEmpty) {
+                          return const Center(
+                              child: Text('No posts available'));
+                        }
+                        _pagingController.value = PagingState(
+                          itemList: state.opportunities,
+                          error: null,
+                          nextPageKey: state.hasReachedMax
+                              ? null
+                              : state.opportunities.length,
+                        );
+                        return PagedListView<int, Opportunity>(
+                          pagingController: _pagingController,
+                          builderDelegate:
+                              PagedChildBuilderDelegate<Opportunity>(
+                            itemBuilder: (context, item, index) =>
+                                OpportunityCard(
+                              organizationName: item.organizationName,
+                              createdAt: item.createdAt ?? DateTime.now(),
+                              address: item.location.readableAddress,
+                              imageUrl: item.imageUrl,
+                              description: item.description,
+                              organizationLogoUrl: item.organizationLogoUrl,
+                              participants: item.registeredUsers.length,
+                              onApply: () {
+                                print('Applying to opportunity');
+
+                                BlocProvider.of<OpportunityAttendanceBloc>(
+                                        context)
+                                    .add(
+                                  AttendAnOpportunity(
+                                    opportunityId: item.id ?? '',
+                                    userId: authState.user!.uid,
+                                  ),
+                                );
+                              },
+                              canApply: profileState.tempUserType ==
+                                      UserType.volunteer &&
+                                  !item.registeredUsers.contains(
+                                    authState.user!.uid,
+                                  ),
+                            ),
+                          ),
+                        );
+                      case PostStatus.initial:
+                      default:
+                        return const Center(child: CircularProgressIndicator());
+                    }
+                  },
+                ),
+              ),
+            );
+          },
         );
       },
     );

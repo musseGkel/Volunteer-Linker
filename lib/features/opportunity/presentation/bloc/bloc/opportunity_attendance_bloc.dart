@@ -12,6 +12,9 @@ import '../../../../home_page/presentation/bloc/home_page_bloc.dart';
 import '../../../data/datasource/opportunity_datasource.dart';
 import '../../../data/model/opportunity.dart';
 import '../../../data/repository/opportunity_repository_impl.dart';
+import '../../../domain/usecases/fetch_attendants_usecase.dart';
+import '../../../domain/usecases/fetch_opportunity_usecase.dart';
+import '../../../domain/usecases/fetch_registered_usecase.dart';
 
 part 'opportunity_attendance_event.dart';
 part 'opportunity_attendance_state.dart';
