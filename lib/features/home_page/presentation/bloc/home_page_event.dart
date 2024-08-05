@@ -11,22 +11,29 @@ sealed class HomePageEvent extends Equatable {
 
 class FetchPostsEvent extends HomePageEvent {
   final HomePageState state;
+  final bool isInitial;
 
   const FetchPostsEvent({
     required this.state,
+    this.isInitial = false,
   });
 
   @override
-  List<Object> get props => [state];
+  List<Object> get props => [
+        state,
+      ];
 
   @override
   Stream<HomePageState> handle() async* {
     ApiResponse response;
 
-    if (state.hasReachedMax) return;
+    print('FetchPostsEvent handle called');
+
+    if (state.hasReachedMax && !isInitial) return;
 
     try {
-      if (state.status == PostStatus.initial) {
+      if (state.status == PostStatus.initial || isInitial) {
+        print('FetchPostsEvent handle called initial');
         response = await FetchPostsUseCase(
           HomePageRepoImpl(
             HomePageDatasource(),
@@ -45,6 +52,7 @@ class FetchPostsEvent extends HomePageEvent {
           opportunities: opportunities,
           lastDocument: lastDocument,
           hasReachedMax: response.body.length < 10,
+          isInitial: isInitial,
         );
       } else if (state.status == PostStatus.success) {
         response = await FetchPostsUseCase(

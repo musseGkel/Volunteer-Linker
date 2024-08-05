@@ -7,8 +7,10 @@ class HomePageState extends Equatable {
   final List<Opportunity> opportunities;
   final bool hasReachedMax;
   final DocumentSnapshot? lastDocument;
+  final bool isInitial;
 
   const HomePageState({
+    this.isInitial = false,
     this.status = PostStatus.initial,
     this.opportunities = const [],
     this.hasReachedMax = false,
@@ -20,12 +22,14 @@ class HomePageState extends Equatable {
     List<Opportunity>? opportunities,
     bool? hasReachedMax,
     DocumentSnapshot? lastDocument,
+    bool? isInitial,
   }) {
     return HomePageState(
       status: status ?? this.status,
       opportunities: opportunities ?? this.opportunities,
       hasReachedMax: hasReachedMax ?? this.hasReachedMax,
       lastDocument: lastDocument ?? this.lastDocument,
+      isInitial: isInitial ?? this.isInitial,
     );
   }
 
@@ -35,6 +39,7 @@ class HomePageState extends Equatable {
         opportunities,
         hasReachedMax,
         lastDocument,
+        isInitial,
       ];
 
   String getTimeAgo(
