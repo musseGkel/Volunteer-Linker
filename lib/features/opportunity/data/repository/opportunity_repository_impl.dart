@@ -27,4 +27,26 @@ class OpportunityRepositoryImpl implements OpportunityRepository {
       userId: userId,
     );
   }
+
+  @override
+  Future<ApiResponse> fetchAttendants({required List<String> attendants}) {
+    return remoteDataSource.fetchAttendants(
+      attendants: attendants,
+    );
+  }
+
+  @override
+  Future<ApiResponse> fetchOpportunity({required String opportunityId}) {
+    return remoteDataSource.fetchOpportunity(
+      opportunityId: opportunityId,
+    );
+  }
+
+  @override
+  Future<ApiResponse> fetchRegisteredUsers(
+      {required List<String> registeredUsers}) {
+    return remoteDataSource.fetchRegisteredUsers(
+      registeredUsers: registeredUsers,
+    );
+  }
 }

@@ -11,4 +11,16 @@ abstract class OpportunityRepository {
     required String opportunityId,
     required String userId,
   });
+
+  Future<ApiResponse> fetchOpportunity({
+    required String opportunityId,
+  });
+
+  Future<ApiResponse> fetchAttendants({
+    required List<String> attendants,
+  });
+
+  Future<ApiResponse> fetchRegisteredUsers({
+   required List<String> registeredUsers,
+  });
 }
