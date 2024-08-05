@@ -6,19 +6,19 @@ class HomePageDatasource {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<ApiResponse> fetchPosts({
-    String userId = "",
+    String? userId,
     required DocumentSnapshot? startAfter,
     required int limit,
   }) async {
     try {
       Query query;
-      if (userId.isEmpty) {
+      if (userId != null && userId!.isEmpty) {
         query =
             _firestore.collection('posts').orderBy('createdAt').limit(limit);
       } else {
         query = _firestore
             .collection('posts')
-            .where('userId', isEqualTo: userId)
+            .where('organizationId', isEqualTo: userId)
             .orderBy('createdAt')
             .limit(limit);
       }
@@ -34,6 +34,8 @@ class HomePageDatasource {
         },
       ).toList();
 
+      print("Opportunities: $opportunities");
+
       return ApiResponse(
         statusCode: 200,
         message: "Success",
@@ -44,6 +46,7 @@ class HomePageDatasource {
         },
       );
     } catch (e) {
+      print("Error: $e");
       return ApiResponse(
         statusCode: 400,
         message: "Error",
