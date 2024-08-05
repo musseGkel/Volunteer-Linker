@@ -33,4 +33,24 @@ class OpportunityDatasource {
       );
     }
   }
+
+  Future attendAnOpportunity(
+      {required String opportunityId, required String userId}) async {
+    try {
+      var response =
+          await _firestore.collection('posts').doc(opportunityId).update({
+        'attendees': FieldValue.arrayUnion([userId])
+      });
+
+      return ApiResponse(
+        statusCode: 200,
+        message: "Success",
+      );
+    } catch (e) {
+      return ApiResponse(
+        statusCode: 400,
+        message: "Error",
+      );
+    }
+  }
 }

@@ -18,4 +18,13 @@ class OpportunityRepositoryImpl implements OpportunityRepository {
       opportunity: opportunity,
     );
   }
+
+  @override
+  Future<ApiResponse> attendAnOpportunity(
+      {required String opportunityId, required String userId}) async {
+    return await remoteDataSource.attendAnOpportunity(
+      opportunityId: opportunityId,
+      userId: userId,
+    );
+  }
 }

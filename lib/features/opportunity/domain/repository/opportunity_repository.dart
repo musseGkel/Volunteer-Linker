@@ -6,4 +6,9 @@ abstract class OpportunityRepository {
   Future<ApiResponse> postOpportunity({
     required Opportunity opportunity,
   });
+
+  Future<ApiResponse> attendAnOpportunity({
+    required String opportunityId,
+    required String userId,
+  });
 }
