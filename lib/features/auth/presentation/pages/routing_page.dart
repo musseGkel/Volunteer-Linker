@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:volunteer_linker/core/enums.dart';
 import 'package:volunteer_linker/features/home_page/presentation/bloc/home_page_bloc.dart';
 import 'package:volunteer_linker/features/map/presentation/pages/google_map_page.dart';
+import 'package:volunteer_linker/features/opportunity/presentation/bloc/bloc/opportunity_attendance_bloc.dart';
 import 'package:volunteer_linker/features/opportunity/presentation/bloc/opportunity_bloc.dart';
 import 'package:volunteer_linker/features/opportunity/presentation/pages/post_opportunity_page.dart';
 
@@ -32,6 +33,9 @@ class RoutingPage extends StatelessWidget {
         ),
         BlocProvider<HomePageBloc>(
           create: (context) => HomePageBloc(),
+        ),
+        BlocProvider<OpportunityAttendanceBloc>(
+          create: (context) => OpportunityAttendanceBloc(),
         ),
       ],
       child: BlocBuilder<AuthBloc, AuthState>(

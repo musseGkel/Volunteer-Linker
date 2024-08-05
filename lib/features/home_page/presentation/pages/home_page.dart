@@ -5,6 +5,7 @@ import 'package:volunteer_linker/core/enums.dart';
 
 import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../../opportunity/data/model/opportunity.dart';
+import '../../../opportunity/presentation/bloc/bloc/opportunity_attendance_bloc.dart';
 import '../../../profile/presentation/bloc/profile_bloc/profile_bloc.dart';
 import '../bloc/home_page_bloc.dart';
 import '../widgets/custom_drawer.dart';
@@ -100,7 +101,15 @@ class _HomePageState extends State<HomePage> {
                         description: item.description,
                         organizationLogoUrl: item.organizationLogoUrl,
                         participants: item.registeredUsers.length,
-                        onApply: () {},
+                        onApply: () {
+                          BlocProvider.of<OpportunityAttendanceBloc>(context)
+                              .add(
+                            AttendAnOpportunity(
+                              opportunityId: item.id ?? '',
+                              userId: authState.user!.uid,
+                            ),
+                          );
+                        },
                       ),
                     ),
                   );
