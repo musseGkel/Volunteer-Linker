@@ -113,3 +113,93 @@ class FetchUserPostsEvent extends OpportunityAttendanceEvent {
     }
   }
 }
+
+class FetchAttendantsAndRegisteredUsers extends OpportunityAttendanceEvent {
+  final String opportunityId;
+  final OpportunityAttendanceState state;
+
+  const FetchAttendantsAndRegisteredUsers({
+    required this.opportunityId,
+    required this.state,
+  });
+
+  @override
+  Stream<OpportunityAttendanceState> handle() async* {
+    ApiResponse opportunityResponse;
+    ApiResponse attendeesResponse;
+    ApiResponse registeredUsersResponse;
+
+    OpportunityAttendanceState updatedState = state.copyWith(
+      isLoading: true,
+    );
+
+    print("FetchAttendantsAndRegisteredUsers opportunityId: $opportunityId");
+
+    opportunityResponse = await FetchOpportunityUsecase(
+      OpportunityRepositoryImpl(
+        remoteDataSource: OpportunityDatasource(),
+      ),
+    ).call(
+      opportunityId,
+    );
+
+    print(
+        "FetchAttendantsAndRegisteredUsers opportunityResponse: ${opportunityResponse.statusCode}");
+
+    if (opportunityResponse.statusCode == 200) {
+      print(
+          "FetchAttendantsAndRegisteredUsers opportunityResponse: ${opportunityResponse.body}");
+
+      Opportunity opportunity = opportunityResponse.body as Opportunity;
+
+      List<String> attendees = opportunity.attendees;
+      List<String> registeredUsers = opportunity.registeredUsers;
+
+      print("FetchAttendantsAndRegisteredUsers attendees:   $attendees");
+      print(
+          "FetchAttendantsAndRegisteredUsers registeredUsers: $registeredUsers");
+
+      if (attendees.isNotEmpty) {
+        attendeesResponse = await FetchAttendantsUseCase(
+          OpportunityRepositoryImpl(
+            remoteDataSource: OpportunityDatasource(),
+          ),
+        ).call(
+          attendees,
+        );
+
+        if (attendeesResponse.statusCode == 200) {
+          List<UserData> fetchedAttendees =
+              attendeesResponse.body as List<UserData>;
+
+          yield updatedState.copyWith(
+            attendees: fetchedAttendees,
+            isLoaded: true,
+            isLoading: false,
+          );
+        }
+      }
+
+      if (registeredUsers.isNotEmpty) {
+        registeredUsersResponse = await FetchRegisteredUseCase(
+          OpportunityRepositoryImpl(
+            remoteDataSource: OpportunityDatasource(),
+          ),
+        ).call(
+          registeredUsers,
+        );
+
+        if (registeredUsersResponse.statusCode == 200) {
+          List<UserData> fetchedRegisteredUsers =
+              registeredUsersResponse.body as List<UserData>;
+
+          yield updatedState.copyWith(
+            registeredUsers: fetchedRegisteredUsers,
+            isLoaded: true,
+            isLoading: false,
+          );
+        }
+      }
+    }
+  }
+}
