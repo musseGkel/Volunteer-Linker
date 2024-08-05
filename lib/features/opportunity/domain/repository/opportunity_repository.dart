@@ -7,7 +7,7 @@ abstract class OpportunityRepository {
     required Opportunity opportunity,
   });
 
-  Future<ApiResponse> attendAnOpportunity({
+  Future<ApiResponse> registerToOpportunity({
     required String opportunityId,
     required String userId,
   });
@@ -21,6 +21,6 @@ abstract class OpportunityRepository {
   });
 
   Future<ApiResponse> fetchRegisteredUsers({
-   required List<String> registeredUsers,
+    required List<String> registeredUsers,
   });
 }

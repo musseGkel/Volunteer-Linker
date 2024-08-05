@@ -7,11 +7,11 @@ class AttendOpportunityUsecase {
 
   AttendOpportunityUsecase(this.repository);
 
-  Future<ApiResponse> attendAnOpportunity({
+  Future<ApiResponse> registerToOpportunity({
     required String opportunityId,
     required String userId,
   }) async {
-    return repository.attendAnOpportunity(
+    return repository.registerToOpportunity(
       opportunityId: opportunityId,
       userId: userId,
     );

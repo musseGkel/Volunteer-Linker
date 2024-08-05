@@ -20,9 +20,9 @@ class OpportunityRepositoryImpl implements OpportunityRepository {
   }
 
   @override
-  Future<ApiResponse> attendAnOpportunity(
+  Future<ApiResponse> registerToOpportunity(
       {required String opportunityId, required String userId}) async {
-    return await remoteDataSource.attendAnOpportunity(
+    return await remoteDataSource.registerToOpportunity(
       opportunityId: opportunityId,
       userId: userId,
     );

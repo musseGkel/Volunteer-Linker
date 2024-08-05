@@ -32,7 +32,7 @@ class AttendAnOpportunity extends OpportunityAttendanceEvent {
       OpportunityRepositoryImpl(
         remoteDataSource: OpportunityDatasource(),
       ),
-    ).attendAnOpportunity(
+    ).registerToOpportunity(
       opportunityId: opportunityId,
       userId: userId,
     );
