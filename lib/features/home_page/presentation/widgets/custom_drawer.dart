@@ -30,11 +30,11 @@ class CustomDrawer extends StatelessWidget {
                   profileState.organization?.profilePictureUrl ?? "";
             }
 
-            String name = profileState.user?.userType == UserType.volunteer
+            String name = profileState.tempUserType == UserType.volunteer
                 ? profileState.user?.name ?? 'Guest User'
                 : profileState.organization?.name ?? 'Guest Organization';
 
-            String email = profileState.user?.userType == UserType.volunteer
+            String email = profileState.tempUserType == UserType.volunteer
                 ? profileState.user?.email ?? 'No email available'
                 : profileState.organization?.email ?? 'No email available';
 

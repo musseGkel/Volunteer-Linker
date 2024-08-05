@@ -42,7 +42,10 @@ class RoutingPage extends StatelessWidget {
       ],
       child: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
-          if (state.currentPage == CurrentPage.home) {
+          if ([
+            CurrentPage.home,
+            CurrentPage.profile,
+          ].contains(state.currentPage)) {
             context.read<ProfileBloc>().add(
                   GetProfile(
                     state: context.read<ProfileBloc>().state,

@@ -26,11 +26,6 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    context.read<ProfileBloc>().add(
-          GetProfile(
-            state: context.read<ProfileBloc>().state,
-          ),
-        );
   }
 
   void _showImageSourceActionSheet(
@@ -103,6 +98,8 @@ class _ProfilePageState extends State<ProfilePage> {
               return BlocConsumer<ProfileBloc, ProfileState>(
                 listener: (context, profileState) {},
                 builder: (context, profileState) {
+                  print('ProfilePage: ${profileState.tempUserType}');
+
                   return profileState.isLoading
                       ? const Center(
                           child: CircularProgressIndicator(),

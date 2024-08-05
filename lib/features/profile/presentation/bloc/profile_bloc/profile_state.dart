@@ -108,7 +108,7 @@ class ProfileState extends Equatable {
   }
 
   displayUserType() {
-    if (user?.userType == UserType.volunteer) {
+    if (tempUserType == UserType.volunteer) {
       return 'Volunteer';
     } else {
       return 'Organization';
@@ -116,7 +116,7 @@ class ProfileState extends Equatable {
   }
 
   checkUserType(UserType userType) {
-    if (user?.userType == userType) {
+    if (tempUserType == userType) {
       return true;
     } else {
       return false;
