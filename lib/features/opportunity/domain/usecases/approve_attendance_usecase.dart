@@ -2,16 +2,16 @@ import 'package:volunteer_linker/services/api_reponse.dart';
 
 import '../repository/opportunity_repository.dart';
 
-class AttendOpportunityUsecase {
+class ApproveAttendanceUsecase {
   final OpportunityRepository repository;
 
-  AttendOpportunityUsecase(this.repository);
+  ApproveAttendanceUsecase(this.repository);
 
-  Future<ApiResponse> registerToOpportunity({
+  Future<ApiResponse> approveAttendance({
     required String opportunityId,
     required String userId,
   }) async {
-    return repository.registerToOpportunity(
+    return repository.approveAttendance(
       opportunityId: opportunityId,
       userId: userId,
     );
