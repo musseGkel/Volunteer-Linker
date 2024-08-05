@@ -53,8 +53,12 @@ class _PostedOpportunitiesState extends State<PostedOpportunities> {
   }
 
   void _onItemTapped(CurrentPage currentPage, AuthState authState) {
-    BlocProvider.of<AuthBloc>(context)
-        .add(ChangePageEvent(changePage: currentPage, state: authState));
+    BlocProvider.of<AuthBloc>(context).add(
+      ChangePageEvent(
+        changePage: currentPage,
+        state: authState,
+      ),
+    );
 
     Navigator.pop(context);
   }
@@ -63,6 +67,9 @@ class _PostedOpportunitiesState extends State<PostedOpportunities> {
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, authState) {
+        print("Current page: ${authState.currentPage}");
+        print("selectedOpportunityId: ${authState.selectedOpportunityId}");
+
         return RefreshIndicator(
           onRefresh: _refreshOpportunities,
           child: Scaffold(
@@ -100,15 +107,45 @@ class _PostedOpportunitiesState extends State<PostedOpportunities> {
                     return PagedListView<int, Opportunity>(
                       pagingController: _pagingController,
                       builderDelegate: PagedChildBuilderDelegate<Opportunity>(
-                        itemBuilder: (context, item, index) => OpportunityCard(
-                          organizationName: item.organizationName,
-                          createdAt: item.createdAt ?? DateTime.now(),
-                          address: item.location.readableAddress,
-                          imageUrl: item.imageUrl,
-                          description: item.description,
-                          organizationLogoUrl: item.organizationLogoUrl,
-                          participants: item.registeredUsers.length,
-                          onApply: () {},
+                        itemBuilder: (context, item, index) => GestureDetector(
+                          onTap: () {
+                            BlocProvider.of<AuthBloc>(context).add(
+                              ChangePageEvent(
+                                changePage: CurrentPage.participants,
+                                state: authState,
+                                opportunityId: item.id ?? "",
+                              ),
+                            );
+
+                            // Future.delayed(const Duration(milliseconds: 100),
+                            //     () {
+                            //   BlocProvider.of<AuthBloc>(context).add(
+                            //     ToggleUserType(
+                            //       userType: authState.userType ==
+                            //               UserType.organization
+                            //           ? UserType.volunteer
+                            //           : UserType.organization,
+                            //       state: authState,
+                            //     ),
+                            //   );
+                            // });
+                            // print("Tapped on item: ${item.id}");
+                            // BlocProvider.of<AuthBloc>(context)
+                            //     .add(SelectOpportunityId(
+                            //   opportunityId: item.id ?? "",
+                            //   state: authState,
+                            // ));
+                          },
+                          child: OpportunityCard(
+                            organizationName: item.organizationName,
+                            createdAt: item.createdAt ?? DateTime.now(),
+                            address: item.location.readableAddress,
+                            imageUrl: item.imageUrl,
+                            description: item.description,
+                            organizationLogoUrl: item.organizationLogoUrl,
+                            participants: item.registeredUsers.length,
+                            onApply: () {},
+                          ),
                         ),
                       ),
                     );
