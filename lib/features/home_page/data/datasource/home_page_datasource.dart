@@ -12,7 +12,7 @@ class HomePageDatasource {
   }) async {
     try {
       Query query;
-      if (userId != null && userId!.isEmpty) {
+      if (userId != null && userId.isEmpty) {
         query =
             _firestore.collection('posts').orderBy('createdAt').limit(limit);
       } else {

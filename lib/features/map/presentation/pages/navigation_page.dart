@@ -59,8 +59,7 @@ class _NavigationPageState extends State<NavigationPage> {
       }
 
       setState(() {});
-    } else {
-    }
+    } else {}
   }
 
   @override

@@ -241,8 +241,8 @@ class _PostOpportunityState extends State<PostOpportunity> {
                                 ),
                               ),
                               Container(
-                                width: 100, // Adjust width as needed
-                                height: 200, // Adjust height as needed
+                                width: 50,
+                                height: 150,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(
                                       8), // Rounded corners

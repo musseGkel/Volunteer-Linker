@@ -6,13 +6,18 @@ class OpportunityAttendanceState extends Equatable {
   final List<Opportunity> opportunities;
   final bool hasReachedMax;
   final DocumentSnapshot? lastDocument;
-
+  final bool isLoaded;
+  final List<UserData> attendees;
+  final List<UserData> registeredUsers;
   const OpportunityAttendanceState({
     this.isLoading = false,
     this.status = PostStatus.initial,
     this.opportunities = const [],
     this.hasReachedMax = false,
     this.lastDocument,
+    this.isLoaded = false,
+    this.attendees = const [],
+    this.registeredUsers = const [],
   });
 
   @override
@@ -22,6 +27,9 @@ class OpportunityAttendanceState extends Equatable {
         opportunities,
         hasReachedMax,
         lastDocument,
+        isLoaded,
+        attendees,
+        registeredUsers,
       ];
 
   OpportunityAttendanceState copyWith({
@@ -30,6 +38,9 @@ class OpportunityAttendanceState extends Equatable {
     List<Opportunity>? opportunities,
     bool? hasReachedMax,
     DocumentSnapshot? lastDocument,
+    bool? isLoaded,
+    List<UserData>? attendees,
+    List<UserData>? registeredUsers,
   }) {
     return OpportunityAttendanceState(
       isLoading: isLoading ?? this.isLoading,
@@ -37,6 +48,9 @@ class OpportunityAttendanceState extends Equatable {
       opportunities: opportunities ?? this.opportunities,
       hasReachedMax: hasReachedMax ?? this.hasReachedMax,
       lastDocument: lastDocument ?? this.lastDocument,
+      isLoaded: isLoaded ?? this.isLoaded,
+      attendees: attendees ?? this.attendees,
+      registeredUsers: registeredUsers ?? this.registeredUsers,
     );
   }
 }

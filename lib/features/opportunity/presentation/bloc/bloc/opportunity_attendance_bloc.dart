@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:volunteer_linker/features/opportunity/domain/usecases/attend_opportunity_usecase.dart';
 import 'package:volunteer_linker/services/api_reponse.dart';
 
+import '../../../../../core/models/user_data.dart';
 import '../../../../home_page/data/datasource/home_page_datasource.dart';
 import '../../../../home_page/data/repository/home_page_repo_impl.dart';
 import '../../../../home_page/domain/usecases/fetch_posts_usecase.dart';
