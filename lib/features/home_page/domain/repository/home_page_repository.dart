@@ -8,5 +8,6 @@ abstract class HomePageRepository {
   Future<ApiResponse> fetchPosts({
     DocumentSnapshot<Object?>? startAfter,
     required int limit,
+    String? userId,
   });
 }

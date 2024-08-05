@@ -12,11 +12,12 @@ class HomePageRepoImpl implements HomePageRepository {
   );
 
   @override
-  Future<ApiResponse> fetchPosts(
-      {DocumentSnapshot<Object?>? startAfter, required int limit}) {
+  Future<ApiResponse> fetchPosts({
+    DocumentSnapshot<Object?>? startAfter,
+    required int limit,
+    String? userId,
+  }) {
     return dataSource.fetchPosts(
-      startAfter: startAfter,
-      limit: limit,
-    );
+        startAfter: startAfter, limit: limit, userId: userId);
   }
 }

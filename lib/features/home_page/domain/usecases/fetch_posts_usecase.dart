@@ -11,10 +11,12 @@ class FetchPostsUseCase {
   Future<ApiResponse> call({
     DocumentSnapshot<Object?>? startAfter,
     required int limit,
+    String? userId,
   }) async {
     return await repository.fetchPosts(
       limit: limit,
       startAfter: startAfter,
+      userId: userId,
     );
   }
 }
