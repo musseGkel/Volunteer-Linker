@@ -116,6 +116,20 @@ class CustomDrawer extends StatelessWidget {
                       authState,
                     ),
                   ),
+                  ListTile(
+                    leading: Icon(
+                      Icons.image,
+                      size: authState
+                              .isCurrentPage(CurrentPage.postedOpportunities)
+                          ? 30
+                          : 24,
+                    ),
+                    title: const Text('Posted Opportunities'),
+                    onTap: () => onItemTapped(
+                      CurrentPage.postedOpportunities,
+                      authState,
+                    ),
+                  ),
                 ],
               ),
             );
