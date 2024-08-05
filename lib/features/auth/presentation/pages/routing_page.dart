@@ -6,6 +6,7 @@ import 'package:volunteer_linker/features/map/presentation/pages/google_map_page
 import 'package:volunteer_linker/features/opportunity/presentation/bloc/bloc/opportunity_attendance_bloc.dart';
 import 'package:volunteer_linker/features/opportunity/presentation/bloc/opportunity_bloc.dart';
 import 'package:volunteer_linker/features/opportunity/presentation/pages/post_opportunity_page.dart';
+import 'package:volunteer_linker/features/opportunity/presentation/pages/posted_opportunities.dart';
 
 import '../../../home_page/presentation/pages/home_page.dart';
 import '../../../profile/presentation/bloc/profile_bloc/profile_bloc.dart';
@@ -51,6 +52,8 @@ class RoutingPage extends StatelessWidget {
               return const ProfilePage();
             } else if (state.currentPage == CurrentPage.home) {
               return const HomePage();
+            } else if (state.currentPage == CurrentPage.postedOpportunities) {
+              return const PostedOpportunities();
             }
           }
           return const LoginScreen();
