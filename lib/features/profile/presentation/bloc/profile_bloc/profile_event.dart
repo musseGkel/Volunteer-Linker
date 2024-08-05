@@ -153,7 +153,7 @@ class GetProfile extends ProfileEvent {
     ApiResponse profileInfoResponse = await ProfileRepositoryImpl(
       datasource: ProfileDatasource(),
     ).getProfileInfo(
-      userId: state.userId,
+      userId: userId,
     );
 
     if (profileInfoResponse.statusCode != 200) {
@@ -168,13 +168,13 @@ class GetProfile extends ProfileEvent {
         response = await ProfileRepositoryImpl(
           datasource: ProfileDatasource(),
         ).getOrganizationProfile(
-          userId: state.userId,
+          userId: userId,
         );
       } else {
         response = await ProfileRepositoryImpl(
           datasource: ProfileDatasource(),
         ).getProfile(
-          userId: state.userId,
+          userId: userId,
         );
       }
 

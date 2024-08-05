@@ -33,7 +33,7 @@ class LoginEvent extends AuthEvent {
       (failure) => AuthState(errorMessage: failure.message),
       (success) => AuthState(
         user: success,
-        currentPage: CurrentPage.postOpportunity,
+        currentPage: CurrentPage.profile,
       ),
     );
   }
