@@ -71,6 +71,7 @@ class UpdateProfile extends ProfileEvent {
 
     ApiResponse response;
     if (state.checkUserType(UserType.volunteer)) {
+      print("UpdateProfile Volunteer profile being updated!");
       response = await ProfileRepositoryImpl(
         datasource: ProfileDatasource(),
       ).updateProfile(
@@ -80,7 +81,7 @@ class UpdateProfile extends ProfileEvent {
           email: state.tempEmail ?? "",
           username: state.tempUsername ?? "",
           bio: state.tempBio ?? "",
-          userType: state.user?.userType ?? UserType.volunteer,
+          userType: UserType.volunteer,
           profilePictureUrl:
               uploadedImageUrl.isNotEmpty ? uploadedImageUrl : "",
           interests: state.tempInterests ?? [],
@@ -91,6 +92,8 @@ class UpdateProfile extends ProfileEvent {
         ),
       );
     } else {
+      print("UpdateProfile Organization profile being updated!");
+
       response = await ProfileRepositoryImpl(
         datasource: ProfileDatasource(),
       ).updateOrganizationProfile(
@@ -99,7 +102,7 @@ class UpdateProfile extends ProfileEvent {
           name: state.tempName ?? "",
           email: state.tempEmail ?? "",
           userName: state.tempUsername ?? "",
-          userType: state.user?.userType ?? UserType.organization,
+          userType: UserType.organization,
           contactNumber: state.tempPhoneNumber ?? "",
           description: state.tempBio ?? "",
           address: state.tempAddress ?? "",
@@ -111,12 +114,16 @@ class UpdateProfile extends ProfileEvent {
     }
 
     if (response.statusCode != 200) {
+      print("UpdateProfile Error");
+
       updateState = state.copywith(
         isLoading: false,
       );
       yield updateState;
       return;
     } else {
+      print("UpdateProfile Success");
+
       updateState = state.copywith(
         isLoading: false,
         editMode: false,
@@ -187,6 +194,7 @@ class GetProfile extends ProfileEvent {
       } else {
         if (response.body.userType == UserType.organization) {
           updateState = state.copywith(
+            userId: userId,
             organization: response.body as Organization,
             isLoading: false,
             tempName: response.body.name,
@@ -195,23 +203,24 @@ class GetProfile extends ProfileEvent {
             tempBio: response.body.description,
             tempAddress: response.body.address,
             tempProfilePictureUrl: response.body.profilePictureUrl,
-            tempUserType: response.body.userType,
+            tempUserType: UserType.organization,
           );
         } else {
           updateState = state.copywith(
-              user: response.body as UserData,
-              isLoading: false,
-              tempName: response.body.name,
-              tempUsername: response.body.username,
-              tempEmail: response.body.email,
-              tempBio: response.body.bio,
-              tempSkills: response.body.skills,
-              tempInterests: response.body.interests,
-              tempAvailability: response.body.availability,
-              tempVolunteerActivities: response.body.volunteerActivities,
-              tempPhoneNumber: response.body.phoneNumber,
-              tempProfilePictureUrl: response.body.profilePictureUrl,
-              tempUserType: response.body.userType);
+            user: response.body as UserData,
+            isLoading: false,
+            tempName: response.body.name,
+            tempUsername: response.body.username,
+            tempEmail: response.body.email,
+            tempBio: response.body.bio,
+            tempSkills: response.body.skills,
+            tempInterests: response.body.interests,
+            tempAvailability: response.body.availability,
+            tempVolunteerActivities: response.body.volunteerActivities,
+            tempPhoneNumber: response.body.phoneNumber,
+            tempProfilePictureUrl: response.body.profilePictureUrl,
+            tempUserType: UserType.volunteer,
+          );
         }
 
         yield updateState;

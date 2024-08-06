@@ -51,14 +51,19 @@ class ProfileDatasource {
     required UserData user,
   }) async {
     try {
+      print("organizationId: ${user.id}");
+
       await _firestore.collection('users').doc(user.id).set(
             user.toJson(),
           );
+      print("updateProfile Success");
+
       return ApiResponse(
         statusCode: 200,
         message: "Success",
       );
     } catch (e) {
+      print("Error: $e");
       return ApiResponse(
         statusCode: 400,
         message: "Error",
@@ -70,14 +75,17 @@ class ProfileDatasource {
     required Organization organization,
   }) async {
     try {
+      print("organizationId: ${organization.id}");
       await _firestore.collection('organizations').doc(organization.id).set(
             organization.toJson(),
           );
+      print("updateOrganizationProfile ");
       return ApiResponse(
         statusCode: 200,
         message: "Success",
       );
     } catch (e) {
+      print("Error: $e");
       return ApiResponse(
         statusCode: 400,
         message: "Error",

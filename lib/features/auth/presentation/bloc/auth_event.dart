@@ -26,11 +26,13 @@ class LoginEvent extends AuthEvent {
     final result = await AuthRepositoryImpl(
       authDataSource: AuthDatasource(),
     ).login(
-      email: email,
-      password: password,
+      email: email.trim(),
+      password: password.trim(),
     );
     yield result.fold(
-      (failure) => AuthState(errorMessage: failure.message),
+      (failure) => AuthState(
+        errorMessage: failure.message,
+      ),
       (success) => AuthState(
         user: success,
         currentPage: CurrentPage.profile,
