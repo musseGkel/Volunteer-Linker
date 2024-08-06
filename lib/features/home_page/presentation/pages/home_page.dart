@@ -106,7 +106,8 @@ class _HomePageState extends State<HomePage> {
                               imageUrl: item.imageUrl,
                               description: item.description,
                               organizationLogoUrl: item.organizationLogoUrl,
-                              participants: item.registeredUsers.length,
+                              participants: (item.registeredUsers.length +
+                                  item.attendees.length),
                               onApply: () {
                                 BlocProvider.of<OpportunityAttendanceBloc>(
                                         context)

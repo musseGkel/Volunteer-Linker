@@ -140,7 +140,8 @@ class _PostedOpportunitiesState extends State<PostedOpportunities> {
                             imageUrl: item.imageUrl,
                             description: item.description,
                             organizationLogoUrl: item.organizationLogoUrl,
-                            participants: item.registeredUsers.length,
+                            participants: (item.registeredUsers.length +
+                                item.attendees.length),
                             onApply: () {},
                           ),
                         ),
