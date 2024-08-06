@@ -8,6 +8,7 @@ class AuthState extends Equatable {
   final UserType userType;
   final CurrentPage currentPage;
   final String selectedOpportunityId;
+  final String selectedCompanyName;
 
   const AuthState({
     this.userType = UserType.volunteer,
@@ -17,6 +18,7 @@ class AuthState extends Equatable {
     this.authMode = AuthMode.login,
     this.currentPage = CurrentPage.home,
     this.selectedOpportunityId = "",
+    this.selectedCompanyName = "",
   });
 
   @override
@@ -28,6 +30,7 @@ class AuthState extends Equatable {
         userType,
         currentPage,
         selectedOpportunityId,
+        selectedCompanyName,
       ];
 
   copyWith({
@@ -38,6 +41,7 @@ class AuthState extends Equatable {
     UserType? userType,
     CurrentPage? currentPage,
     String? selectedOpportunityId,
+    String? selectedCompanyName,
   }) {
     return AuthState(
       user: user ?? this.user,
@@ -48,6 +52,7 @@ class AuthState extends Equatable {
       currentPage: currentPage ?? this.currentPage,
       selectedOpportunityId:
           selectedOpportunityId ?? this.selectedOpportunityId,
+      selectedCompanyName: selectedCompanyName ?? this.selectedCompanyName,
     );
   }
 

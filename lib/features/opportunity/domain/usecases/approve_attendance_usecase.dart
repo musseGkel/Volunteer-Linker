@@ -10,10 +10,12 @@ class ApproveAttendanceUsecase {
   Future<ApiResponse> approveAttendance({
     required String opportunityId,
     required String userId,
+    required String companyName,
   }) async {
     return repository.approveAttendance(
       opportunityId: opportunityId,
       userId: userId,
+      companyName: companyName,
     );
   }
 }

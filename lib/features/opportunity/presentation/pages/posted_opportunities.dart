@@ -111,6 +111,7 @@ class _PostedOpportunitiesState extends State<PostedOpportunities> {
                                 changePage: CurrentPage.participants,
                                 state: authState,
                                 opportunityId: item.id ?? "",
+                                companyName: item.organizationName ?? "",
                               ),
                             );
 

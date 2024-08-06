@@ -61,62 +61,85 @@ class ProfileDetailExpansionTile extends StatelessWidget {
                         padding: const EdgeInsets.all(
                           8.0,
                         ),
-                        child: Column(
-                          children: [
-                            const Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 10),
-                              child: Row(
+                        child: profileState.tempVolunteerActivities == null ||
+                                profileState.tempVolunteerActivities!.isEmpty
+                            ? SizedBox()
+                            : Column(
                                 children: [
-                                  Text(
-                                    "Charity",
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold,
+                                  const Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 10),
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          "Charity",
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        // Spacer(),
+                                        // Text(
+                                        //   "Hours of contribution",
+                                        //   style: TextStyle(
+                                        //     fontSize: 14,
+                                        //     fontWeight: FontWeight.bold,
+                                        //   ),
+                                        // ),
+                                      ],
                                     ),
                                   ),
-                                  Spacer(),
-                                  Text(
-                                    "Hours of contribution",
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
+                                  // if (profileState.tempVolunteerActivities !=
+                                  //         null &&
+                                  //     profileState
+                                  //         .tempVolunteerActivities!.isNotEmpty)
+                                  ListView(
+                                    children: profileState
+                                        .tempVolunteerActivities!
+                                        .map((charity) {
+                                      return ListTile(
+                                        title: Text(
+                                          charity,
+                                          style: const TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      );
+                                    }).toList(),
+                                  )
+                                  // ...Map.from(state.volunteerActivities())
+                                  //     .entries
+                                  //     .map((entry) {
+                                  //   final String charity = entry.key;
+                                  //   final int hours = entry.value;
+
+                                  //   // return SizedBox();
+                                  //   return ListTile(
+                                  //     title: Text(
+                                  //       "$charity : ",
+                                  //       style: const TextStyle(
+                                  //         fontSize: 14,
+                                  //         fontWeight: FontWeight.bold,
+                                  //       ),
+                                  //     ),
+                                  //     trailing: SizedBox(
+                                  //       width: 50,
+                                  //       child: Row(
+                                  //         children: [
+                                  //           Text(
+                                  //             hours.toString(),
+                                  //             style: const TextStyle(
+                                  //               fontSize: 13,
+                                  //             ),
+                                  //           ),
+                                  //         ],
+                                  //       ),
+                                  //     ),
+                                  //   );
+                                  // }),
                                 ],
                               ),
-                            ),
-                            ...Map.from(state.volunteerActivities())
-                                .entries
-                                .map((entry) {
-                              final String charity = entry.key;
-                              final int hours = entry.value;
-
-                              // return SizedBox();
-                              return ListTile(
-                                title: Text(
-                                  "$charity : ",
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                trailing: SizedBox(
-                                  width: 50,
-                                  child: Row(
-                                    children: [
-                                      Text(
-                                        hours.toString(),
-                                        style: const TextStyle(
-                                          fontSize: 13,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            }),
-                          ],
-                        ),
                       ),
                     if (profileDetailType == ProfileDetailType.availability)
                       Padding(

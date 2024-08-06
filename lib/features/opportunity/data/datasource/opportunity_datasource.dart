@@ -46,7 +46,6 @@ class OpportunityDatasource {
         )
       });
 
-
       return ApiResponse(
         statusCode: 200,
         message: "Success",
@@ -62,17 +61,24 @@ class OpportunityDatasource {
   Future<ApiResponse> approveAttendance({
     required String opportunityId,
     required String userId,
+    required String companyName,
   }) async {
     final DocumentReference opportunityRef =
         _firestore.collection('posts').doc(opportunityId);
+    final DocumentReference userRef =
+        _firestore.collection('users').doc(userId);
 
     try {
       await _firestore.runTransaction((transaction) async {
         DocumentSnapshot opportunitySnapshot =
             await transaction.get(opportunityRef);
+        DocumentSnapshot userSnapshot = await transaction.get(userRef);
 
         if (!opportunitySnapshot.exists) {
           throw Exception("Opportunity does not exist");
+        }
+        if (!userSnapshot.exists) {
+          throw Exception("User does not exist");
         }
 
         List<String> attendees = List.from(opportunitySnapshot['attendees']);
@@ -90,8 +96,17 @@ class OpportunityDatasource {
           'attendees': attendees,
           'registeredUsers': registeredUsers,
         });
-      });
 
+        List<String> volunteerActivities =
+            List.from(userSnapshot['volunteerActivities']);
+        if (!volunteerActivities.contains(companyName)) {
+          volunteerActivities.add(companyName);
+        }
+
+        transaction.update(userRef, {
+          'volunteerActivities': volunteerActivities,
+        });
+      });
 
       return ApiResponse(
         statusCode: 200,
@@ -139,11 +154,9 @@ class OpportunityDatasource {
             .doc(userId)
             .get();
         if (userDoc.exists) {
-
           users.add(UserData.fromJson(userDoc.data() as Map<String, dynamic>));
         }
       }
-
 
       return ApiResponse(
         statusCode: 200,
@@ -169,7 +182,6 @@ class OpportunityDatasource {
           .doc(userId)
           .get();
       if (userDoc.exists) {
-
         users.add(UserData.fromJson(userDoc.data() as Map<String, dynamic>));
       }
     }

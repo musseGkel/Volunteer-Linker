@@ -44,16 +44,19 @@ class RegisterToAnOpportunity extends OpportunityAttendanceEvent {
 class ApproveAttendance extends OpportunityAttendanceEvent {
   final String opportunityId;
   final String userId;
+  final String companyName;
 
   const ApproveAttendance({
     required this.opportunityId,
     required this.userId,
+    required this.companyName,
   });
 
   @override
   List<Object> get props => [
         opportunityId,
         userId,
+        companyName,
       ];
 
   @override
@@ -66,6 +69,7 @@ class ApproveAttendance extends OpportunityAttendanceEvent {
     ).approveAttendance(
       opportunityId: opportunityId,
       userId: userId,
+      companyName: companyName,
     );
 
     yield const OpportunityAttendanceState(isLoading: false);

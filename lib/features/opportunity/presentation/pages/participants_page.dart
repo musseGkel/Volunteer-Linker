@@ -9,10 +9,12 @@ import '../bloc/bloc/opportunity_attendance_bloc.dart';
 
 class ParticipantsPage extends StatefulWidget {
   final String opportunityId;
+  final String organizationName;
 
   const ParticipantsPage({
     Key? key,
     required this.opportunityId,
+    required this.organizationName,
   }) : super(key: key);
 
   @override
@@ -134,6 +136,7 @@ class _ParticipantsPageState extends State<ParticipantsPage> {
                                         ApproveAttendance(
                                           opportunityId: widget.opportunityId,
                                           userId: registeredUsers[index].id,
+                                          companyName: widget.organizationName,
                                         ),
                                       );
                                       BlocProvider.of<

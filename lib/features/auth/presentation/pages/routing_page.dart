@@ -71,6 +71,7 @@ class RoutingPage extends StatelessWidget {
             } else if (state.currentPage == CurrentPage.participants) {
               return ParticipantsPage(
                 opportunityId: state.selectedOpportunityId,
+                organizationName: state.selectedCompanyName ?? "",
               );
             }
           }

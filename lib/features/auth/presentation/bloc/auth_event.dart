@@ -188,11 +188,13 @@ class ChangePageEvent extends AuthEvent {
   final CurrentPage changePage;
   final AuthState state;
   final String? opportunityId;
+  final String? companyName;
 
   const ChangePageEvent({
     required this.changePage,
     required this.state,
     this.opportunityId,
+    this.companyName,
   });
 
   @override
@@ -200,6 +202,7 @@ class ChangePageEvent extends AuthEvent {
     AuthState updatedState = state.copyWith(
       currentPage: changePage,
       selectedOpportunityId: opportunityId,
+      selectedCompanyName: companyName,
     );
 
     yield updatedState;
