@@ -22,7 +22,7 @@ class EditProfileDetailDialog extends StatelessWidget {
     return AlertDialog(
       title: Text('Edit $title'),
       content: TextField(
-        keyboardType: TextInputType.number,
+        keyboardType: keyboardType,
         controller: controller,
         maxLines: null,
         decoration: InputDecoration(
